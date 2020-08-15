@@ -1,0 +1,24 @@
+syntax enable
+
+set noerrorbells
+set nocompatible
+set backspace=indent,eol,start  
+set path+=** "pwd recursive
+set wildmenu
+set nowrap
+set smartcase
+set noswapfile
+set nobackup
+set undodir=~/.undodir
+set undofile
+set incsearch
+set autoindent
+set tabstop=4 shiftwidth=4 softtabstop=4
+
+map = :set laststatus=0<CR>
+map - :set laststatus=2<CR>
+
+autocmd BufNewFile,BufRead *.hs set expandtab
+autocmd BufNewFile,BufRead *.pl set filetype=prolog
+
+source /etc/nixos/dotfiles/vim/coc.vim

@@ -1,0 +1,26 @@
+function download {
+	youtube-dl -o '~/Library/Music/%(title)s.%(ext)s'\
+		--extract-audio --audio-format mp3 $1
+}
+
+function search {
+	echo "" | bemenu -p "YT Search:"
+}
+
+SRC=$(search)
+if [ "$SRC" == "" ]; then
+	exit 1
+fi
+echo $SRC
+NM="some name"
+IND=$(curl -s https://invidio.us/search?q=${SRC// /+})
+NM=$(echo $IND | (echo "otkazi" && pup 'a[href*=/watch?]:only-child text{}') |
+	bemenu -l 10)
+if [ "$NM" == "otkazi" ]; then
+	exit 1
+fi
+URL=$(echo $IND | pup 'a[href*=/watch?]:contains("'"$NM"'") attr{href}' |
+	awk '{ print "https://invidio.us" $0 }')
+echo $URL
+download $URL
+notify-send "$NM" 'Skinuta je ova pesma' --icon=dialog-information

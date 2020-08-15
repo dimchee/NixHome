@@ -1,0 +1,1 @@
+patchelf --set-interpreter /nix/store/8g1v3sf0xvf044sz1b4kcrg1i86z9bh7-glibc-2.30/lib/ld-linux-x86-64.so.2 $1

@@ -1,3 +1,0 @@
-convert $1 -resize 350x450\! __resized.png
-montage $(seq 6 | xargs -I {} echo "__resized.png") -mode Concatenate -tile 3x2 __montage.png
-convert -size 1300x900 xc:white -page +0+0 __montage.png -layers flatten final.png

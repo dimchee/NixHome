@@ -1,4 +1,4 @@
-with import <nixpkgs> {};
+{ config, pkgs, ... }:
 let
   config = pkgs.writeTextFile (rec {
     name = "kakrc.kak";
@@ -8,9 +8,12 @@ let
       lsp-enable
     '';
   });
-in
-  wrapKakoune kakoune-unwrapped {
+  kak = wrapKakoune kakoune-unwrapped {
     configure = {
       plugins = [ config pkgs.kak-lsp ];
     };
-  }
+  };
+in
+{
+  environment.systemPackages = [ kak pkgs.kak-lsp ];
+}

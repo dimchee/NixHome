@@ -1,5 +1,4 @@
-with import <nixpkgs> {};
-
+{ config, pkgs, ... }:
 let
   jupyter-vim = pkgs.vimUtils.buildVimPlugin {
     name = "jupyter-vim";
@@ -16,21 +15,18 @@ let
     haskell-vim hoogle
     julia-vim
     agda-vim
-    # jupyter-vim
     vim-nix
     gruvbox
     vim-airline
   ];
-  vim = (vim_configurable.override { python = python3; }).customize {
-    name = "vim";
-    vimrcConfig.customRC = "source /etc/nixos/dotfiles/vim/vimrc";
-    vimrcConfig.packages.myVimPackage.start = pkg; 
-  };
-  nvim = neovim.override {
+  nvim = pkgs.neovim.override {
     vimAlias = true;
     configure = {
       packages.myPlugins.start = pkg; 
-      customRC = "source /etc/nixos/dotfiles/vim/vimrc";
+      customRC = "source /home/dimchee/NixHome/cli/vim/vimrc";
     };
   };
-in nvim
+in
+{
+  environment.systemPackages = with pkgs; [ nvim nodejs ];
+}

@@ -1,2 +1,0 @@
-cat ~/Code/scripts/icons/i_{dev,fae,fa,iec,linux,oct,ple,pom,seti,material,weather}.sh |
-	~/Code/scripts/icons/filter | bemenu -l 20 | awk '{print $1}'

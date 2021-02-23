@@ -1,10 +1,17 @@
 { config, pkgs, ... }:
-
+let
+  home-manager = builtins.fetchFromGitHub {
+    owner = "rycee";
+    repo = "home-manager";
+    rev = "7582090eb0f64144995d4fb9d5e52343e2c3f64b";
+    sha256 = "10a3yvazpdpv1sj00w9a1mswy5y8pzsjd4gsfnbgd7ygijqybr9i";
+  };
+in
 {
   imports = [
-    ./hardware-configuration.nix
-    ./dotfiles/sway
-    ./dotfiles/mpd.nix
+    /etc/nixos/hardware-configuration.nix
+    # <home-manager/nixos> # https://rycee.gitlab.io/home-manager/index.html#sec-install-nixos-module
+    ./desk ./cli ./dev ./gui
   ];
 
   nix.extraOptions = ''
@@ -58,78 +65,7 @@
   };
 
   time.timeZone = "Europe/Belgrade";
-  environment.systemPackages = with pkgs; [
-    wget
-	tree
-    file
-    ntfs3g
-    git
-    feh
-    mpv
-    niv
-    lorri
-	direnv
-    fzf
-    lsd
-    gotop
-    youtube-dl
-    mpc_cli
-    ncmpcpp
-    jq
-    tldr
-    zip unzip
-    ripgrep
-    ffmpeg
-    imagemagick
-    go-pup # html scraper
-
-	alacritty
-    firefox-wayland
-    discord
-    # blender
-    # inkscape
-    gimp
-    libreoffice
-	zathura
-
-	# editors
-    nodejs
-    (import ./dotfiles/vim)
-    (import ./dotfiles/kak.nix)
-    kak-lsp 
-    vscode
-
-    cage
-
-    # devel
-	swiProlog
-	mathematica11
-	elmPackages.elm
-    purescript
-    spago
-	dotnet-sdk_3
-	adoptopenjdk-bin
-    julia
-    gnumake
-    gnome3.gtk
-	gnome3.glade
-    ghc
-    cabal-install
-    haskellPackages.hoogle
-    haskellPackages.ghcide
-    (import ./dotfiles/agda.nix)
-    go
-	rustup
-    nasm
-    lean
-    racket-minimal
-    (import ./dotfiles/python.nix)
-    tectonic
-    texlab
-    pandoc
-    graphviz
-  ];
-  environment.pathsToLink = [ "/share/agda" ];
+  environment.systemPackages = with pkgs; [ cage ];
 
   programs.adb.enable = true;     # adbusers group
   programs.light.enable = true;   # video group
@@ -152,10 +88,8 @@
     EDITOR = "vim";
     BROWSER = "firefox";
     TERMINAL = "alacritty";
-    XDG_CONFIG_HOME = "/etc/nixos/dotfiles";
   };
 
-
-  system.stateVersion = "20.03"; # compatibility DONT TOUCH?
+  system.stateVersion = "20.09";
 }
 

@@ -1,1 +1,0 @@
-sed -n '/^i/p' | awk '{print substr($0,4,1) "  " substr($2,3)}' | sed 's/=$i//'

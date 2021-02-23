@@ -1,5 +1,3 @@
-# Read `man 5 sway` for a complete reference.
-
 set $mod Mod4
 
 set $left h
@@ -7,21 +5,31 @@ set $down j
 set $up k
 set $right l
 
-set $term alacritty 
+set $term alacritty --config-file /home/dimchee/NixHome/desk/alacritty/alacritty.yml
 set $menu bemenu-run --fn 12 
 set $screenshot grim ~/Library/Images/screenshots/scrn-$(date +"%Y-%m-%d-%H-%M-%S").png
 set $screenclip slurp | grim -g - ~/Library/Images/screenshots/scrn-$(date +"%Y-%m-%d-%H-%M-%S").png
+set $waybar waybar --config /home/dimchee/NixHome/desk/waybar/config
 
-# Wallpaper and bar
-output * bg ../bg/Suma.png fill
-exec waybar
+# Wallpaper, bar, clipman
+output * bg /home/dimchee/NixHome/desk/bg/Suma.png fill
+exec $waybar
+exec wl-paste -t text --watch clipman store
 
-bindsym $mod+Shift+t exec "pkill waybar; waybar"
+bindsym $mod+Shift+t exec "pkill waybar; $waybar"
 
-for_window [app_id="mpv"]            floating enable
-for_window [app_id="pavucontrol"]    floating enable
-for_window [class=".scrcpy-wrapped"] floating enable
+for_window [class="[.]*"]        floating enable
+for_window [app_id="firefox"]    floating disable
+for_window [app_id="allacritty"] floating disable
+for_window [title="notes"]       floating enable   
+for_window [app_id="app"]         floating enable
+
+#for_window [app_id="mpv"]            floating enable
+#for_window [app_id="pavucontrol"]    floating enable
+#for_window [class=".scrcpy-wrapped"] floating enable
+#for_window [app_id="anki"]           floating enable
 for_window [app_id="firefox"]        border none
+bindsym $mod+n exec $term -t "notes" -e note 
 
 # No window title bar
 default_border pixel
@@ -173,9 +181,9 @@ mode "resize" {
 }
 bindsym $mod+r mode "resize"
 
-bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
-bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
-bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+# bindsym XF86AudioRaiseVolume exec "pactl set-sink-volume @DEFAULT_SINK@ +5%; pkill -SIGRTMIN+2 waybar"
+# bindsym XF86AudioLowerVolume exec "pactl set-sink-volume @DEFAULT_SINK@ -5%; pkill -SIGRTMIN+2 waybar"
+# bindsym XF86AudioMute exec "pactl set-sink-mute @DEFAULT_SINK@ toggle; pkill -SIGRTMIN+2 waybar"
 bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
 bindsym XF86MonBrightnessDown exec brightnessctl set 1%-
 bindsym XF86MonBrightnessUp exec brightnessctl set +1%

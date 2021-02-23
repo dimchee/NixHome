@@ -1,1 +1,0 @@
-mpv --ytdl-format="bestvideo[height<=?$2][vcodec!=vp9]+bestaudio/best" $1

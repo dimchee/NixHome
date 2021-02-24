@@ -8,4 +8,3 @@ if [ $(pactl list sinks | grep Mute | awk '{print $2}' ) == "no" ]; then
 else
 	echo "ﱝ"
 fi
-

@@ -19,26 +19,26 @@
       clipman
       qt5.qtwayland  # qt support
       libappindicator# for tray in waybar
-      (
-        pkgs.writeTextFile {
+      (pkgs.writeTextFile {
           name = "startway";
           destination = "/bin/startway";
           executable = true;
           text = ''
             #! ${pkgs.bash}/bin/bash
-            systemctl --user import-environment
-            systemctl --user start way-session.target
+            # systemctl --user import-environment
+            # systemctl --user start way-session.target
+            ${pkgs.sway}/bin/sway
           '';
-        }
-      )
+        })
     ];
   };
+  nixpkgs.config.pulseaudio = true; # waybar pulseaudio support
   environment.etc = {
     "sway/config".source = ./config;
     "xdg/waybar/config".source = ../waybar/config;
     "xdg/waybar/style.css".source = ../waybar/style.css;
   };
-  sound.mediaKeys.enable = true; # enable sound control
+  # sound.mediaKeys.enable = true; # enable sound control
   environment.variables = {
     # For libappindicator
     XDG_CURRENT_DESKTOP = "Unity";
@@ -60,22 +60,36 @@
     enable = true;
     package = pkgs.redshift-wlr;
   };
-  systemd.user.targets.way-session = {
-    description = "Wayland compositor session";
-    documentation = [ "man:systemd.special(7)" ];
-    bindsTo = [ "graphical-session.target" ];
-    wants = [ "graphical-session-pre.target" ];
-    after = [ "graphical-session-pre.target" ];
-  };
-  systemd.user.services.kanshi = {
-    description = "Kanshi output autoconfig ";
-    wantedBy = [ "way-session.target" ];
-    partOf =  [ "way-session.target" ];
-    serviceConfig = {
-      # config at .config/kanshi/config
-      ExecStart = "${pkgs.kanshi}/bin/kanshi";
-      RestartSec = 5;
-      Restart = "always";
-    };
-  };
 }
+#  systemd.user.targets.way-session = {
+#    description = "Wayland compositor session";
+#    documentation = [ "man:systemd.special(7)" ];
+#    bindsTo = [ "graphical-session.target" ];
+#    wants = [ "graphical-session-pre.target" ];
+#    after = [ "graphical-session-pre.target" ];
+#  };
+#  systemd.user.services.sway = {
+#    description = "Sway - Wayland window manager";
+#    bindsTo = [ "way-session.target" ];
+#    wants = [ "way-session.target" ];
+#    after = [ "way-session.target" ];
+#    environment.PATH = lib.mkForce null;
+#    serviceConfig = {
+#      ExecStart = "${pkgs.sway}/bin/sway";
+#      RestartSec = 1;
+#      Restart = "on-failure";
+#      TimeoutStopSec = 10;
+#    };
+#  };
+#  systemd.user.services.kanshi = {
+#    description = "Kanshi output autoconfig ";
+#    wantedBy = [ "way-session.target" ];
+#    partOf =  [ "way-session.target" ];
+#    serviceConfig = {
+#      # config at .config/kanshi/config
+#      ExecStart = "${pkgs.kanshi}/bin/kanshi";
+#      RestartSec = 5;
+#      Restart = "always";
+#    };
+#  };
+#}

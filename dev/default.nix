@@ -1,5 +1,6 @@
 { config, pkgs, ... }:
 {
+  imports = [ ./julia.nix ];
   environment.systemPackages = with pkgs; [
     swiProlog
     mathematica11

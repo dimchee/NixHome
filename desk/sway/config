@@ -16,6 +16,13 @@ output * bg /home/dimchee/NixHome/desk/bg/Suma.png fill
 exec $waybar
 exec wl-paste -t text --watch clipman store
 
+# Idle configuration
+exec swayidle -w \
+  timeout 300 'swaylock -f -c 000000' \
+  timeout 600 'swaymsg "output * dpms off"' \
+  resume 'swaymsg "output * dpms on"' \
+  before-sleep 'swaylock -f -c 000000'
+
 bindsym $mod+Shift+t exec "pkill waybar; $waybar"
 
 for_window [class="[.]*"]        floating enable
@@ -181,9 +188,9 @@ mode "resize" {
 }
 bindsym $mod+r mode "resize"
 
-# bindsym XF86AudioRaiseVolume exec "pactl set-sink-volume @DEFAULT_SINK@ +5%; pkill -SIGRTMIN+2 waybar"
-# bindsym XF86AudioLowerVolume exec "pactl set-sink-volume @DEFAULT_SINK@ -5%; pkill -SIGRTMIN+2 waybar"
-# bindsym XF86AudioMute exec "pactl set-sink-mute @DEFAULT_SINK@ toggle; pkill -SIGRTMIN+2 waybar"
+bindsym XF86AudioRaiseVolume exec "pactl set-sink-volume @DEFAULT_SINK@ +5%; pkill -SIGRTMIN+2 waybar"
+bindsym XF86AudioLowerVolume exec "pactl set-sink-volume @DEFAULT_SINK@ -5%; pkill -SIGRTMIN+2 waybar"
+bindsym XF86AudioMute exec "pactl set-sink-mute @DEFAULT_SINK@ toggle; pkill -SIGRTMIN+2 waybar"
 bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
 bindsym XF86MonBrightnessDown exec brightnessctl set 1%-
 bindsym XF86MonBrightnessUp exec brightnessctl set +1%

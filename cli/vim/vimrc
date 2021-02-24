@@ -21,4 +21,6 @@ map - :set laststatus=2<CR>
 autocmd BufNewFile,BufRead *.hs set expandtab
 autocmd BufNewFile,BufRead *.pl set filetype=prolog
 
-source /home/dimchee/NixHome/cli/vim/coc.vim
+noremap <C-f> :Files<cr>
+
+"source /home/dimchee/NixHome/cli/vim/coc.vim

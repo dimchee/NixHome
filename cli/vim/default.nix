@@ -26,7 +26,10 @@ let
       customRC = "source /home/dimchee/NixHome/cli/vim/vimrc";
     };
   };
+  nvim-nightly = pkgs.neovim-nightly.override {
+    vimAlias = true;
+  };
 in
-{
-  environment.systemPackages = with pkgs; [ nvim nodejs ];
-}
+{ 
+   environment.systemPackages = [ nvim pkgs.nodejs ]; # nvim-nightly ];
+} 

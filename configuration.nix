@@ -1,18 +1,12 @@
 { config, pkgs, ... }:
-let
-  home-manager = builtins.fetchFromGitHub {
-    owner = "rycee";
-    repo = "home-manager";
-    rev = "7582090eb0f64144995d4fb9d5e52343e2c3f64b";
-    sha256 = "10a3yvazpdpv1sj00w9a1mswy5y8pzsjd4gsfnbgd7ygijqybr9i";
-  };
-in
 {
   imports = [
     /etc/nixos/hardware-configuration.nix
-    # <home-manager/nixos> # https://rycee.gitlab.io/home-manager/index.html#sec-install-nixos-module
+    /etc/nixos/cachix.nix
+    ./home.nix
     ./desk ./cli ./dev ./gui
   ];
+  
 
   nix.extraOptions = ''
     keep-outputs = true
@@ -65,7 +59,7 @@ in
   };
 
   time.timeZone = "Europe/Belgrade";
-  environment.systemPackages = with pkgs; [ cage ];
+  environment.systemPackages = with pkgs; [ cage cachix ];
 
   programs.adb.enable = true;     # adbusers group
   programs.light.enable = true;   # video group

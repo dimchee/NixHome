@@ -3,8 +3,8 @@
     "position": "top",
     "height": 24,
     "modules-left": ["sway/workspaces", "sway/mode" ],
-    "modules-center": ["sway/window", "taskbar"],
-    "modules-right": [ "mpd", "custom/pulseaudio", "backlight", "network", "cpu", "memory", "battery", "tray", "clock", "custom/lang"],
+    "modules-center": ["sway/window"],
+    "modules-right": [ "mpd", "pulseaudio", "backlight", "network", "cpu", "memory", "battery", "tray", "clock", "custom/lang"],
     "sway/workspaces": {
         "disable-scroll": true,
         "all-outputs": false,
@@ -62,13 +62,13 @@
 	"custom/pulseaudio": {
 		"format": " {} ",
 		"interval": 5,
-		"exec": "/etc/nixos/dotfiles/waybar/pulse.sh",
+		"exec": "/home/dimchee/NixHome/desk/waybar/pulse.sh",
 		"tooltip": false
 	},
 	"custom/lang": {
 		"format": " {} ",
 		"interval": 5,
-		"exec": "/etc/nixos/dotfiles/waybar/keyboard.sh",
+		"exec": "/home/dimchee/NixHome/desk/waybar/keyboard.sh",
 		"tooltip": false,
 		"signal": 1
 	},

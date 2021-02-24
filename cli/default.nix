@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 {
-  imports = [./vim ];
+  # imports = [./vim ];
   environment.systemPackages = with pkgs; [
     wget
     tree

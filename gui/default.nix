@@ -6,6 +6,8 @@
     discord
     # blender
     # inkscape
+    imv mpv
+    vlc
     gimp
     libreoffice
     zathura

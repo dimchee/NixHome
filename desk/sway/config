@@ -5,7 +5,7 @@ set $down j
 set $up k
 set $right l
 
-set $term alacritty --config-file /home/dimchee/NixHome/desk/alacritty/alacritty.yml
+set $term alacritty --config-file /home/dimchee/NixHome/gui/alacritty/alacritty.yml
 set $menu bemenu-run --fn 12 
 set $screenshot grim ~/Library/Images/screenshots/scrn-$(date +"%Y-%m-%d-%H-%M-%S").png
 set $screenclip slurp | grim -g - ~/Library/Images/screenshots/scrn-$(date +"%Y-%m-%d-%H-%M-%S").png

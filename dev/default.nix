@@ -1,15 +1,16 @@
 { config, pkgs, ... }:
 {
-  imports = [ ./julia.nix ];
+  imports = [
+    ./julia.nix ./python.nix
+    ./mathematica.nix ./agda.nix
+  ];
   environment.systemPackages = with pkgs; [
     swiProlog
-    mathematica11
     elmPackages.elm
     purescript
     spago
     dotnet-sdk_3
     adoptopenjdk-bin
-    # julia
     gnumake
     gnome3.gtk
     gnome3.glade
@@ -17,13 +18,11 @@
     cabal-install
     haskellPackages.hoogle
     haskellPackages.ghcide
-    (import ./agda.nix)
     go
     rustup
     nasm
     lean
     racket-minimal
-    (import ./python.nix)
     tectonic
     texlab
     pandoc

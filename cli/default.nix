@@ -1,29 +1,18 @@
 { config, pkgs, ... }:
 {
-  # imports = [./vim ];
+  imports = [./vim ];
   environment.systemPackages = with pkgs; [
-    wget
-    tree
-    file
+    wget tree file
     ntfs3g
-    git
-    feh
-    mpv
-    niv
-    lorri
-    direnv
-    fzf
-    lsd
+    git fzf bat
+    ripgrep
+    tldr
+    niv lorri direnv
     gotop
     youtube-dl
-    mpc_cli
-    ncmpcpp
-    jq
-    tldr
+    mpc_cli ncmpcpp
+    jq go-pup # html scraper
     zip unzip
-    ripgrep
-    ffmpeg
-    imagemagick
-    go-pup # html scraper
+    ffmpeg imagemagick
   ];
 }

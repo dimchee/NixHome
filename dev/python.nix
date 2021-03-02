@@ -1,4 +1,4 @@
-with import <nixpkgs> {};
+{ config, pkgs, ... }:
 let
   mypkgs = pypkgs: with pypkgs; [
     pandas
@@ -9,6 +9,11 @@ let
     ipython
     qtconsole
     beautifulsoup4
+    pyls-mypy
   ]; 
 in
-  python3.withPackages mypkgs
+{
+  environment.systemPackages = with pkgs; [
+    (python3.withPackages mypkgs)
+  ];
+}

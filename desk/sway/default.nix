@@ -32,7 +32,7 @@
         })
     ];
   };
-  nixpkgs.config.pulseaudio = true; # waybar pulseaudio support
+  # nixpkgs.config.pulseaudio = true; # waybar pulseaudio support
   environment.etc = {
     "sway/config".source = ./config;
     "xdg/waybar/config".source = ../waybar/config;

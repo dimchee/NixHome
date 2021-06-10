@@ -3,7 +3,7 @@
   programs.sway = {
     enable = true;
     wrapperFeatures.gtk = true;
-    extraOptions = [ "--debug" "-c" "/home/dimchee/NixHome/desk/sway/config" ];
+    # extraOptions = [ ];
     extraPackages = with pkgs; [
       swaylock-fancy # lockscreen
       xwayland       # for legacy apps
@@ -27,7 +27,7 @@
             #! ${pkgs.bash}/bin/bash
             # systemctl --user import-environment
             # systemctl --user start way-session.target
-            ${pkgs.sway}/bin/sway
+            ${pkgs.sway}/bin/sway --debug -c "/home/dimchee/NixHome/desk/sway/config" 
           '';
         })
     ];
@@ -50,6 +50,8 @@
     ELM_ENGINE = "wayland_egl";
     # Java...
     _JAVA_AWT_WM_NONREPARENTING = "1";
+    # QT apps
+    QT_QPA_PLATFORM = "wayland-egl";
   };
 
   location = {

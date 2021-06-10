@@ -25,18 +25,12 @@ exec swayidle -w \
 
 bindsym $mod+Shift+t exec "pkill waybar; $waybar"
 
-for_window [class="[.]*"]        floating enable
-for_window [app_id="firefox"]    floating disable
-for_window [app_id="allacritty"] floating disable
-for_window [title="notes"]       floating enable   
-for_window [app_id="app"]         floating enable
+for_window [app_id=".*"]        floating enable
+for_window [app_id="firefox"]   floating disable
+for_window [app_id="Alacritty"] floating disable
+for_window [app_id="zathura"]   floating disable
 
-#for_window [app_id="mpv"]            floating enable
-#for_window [app_id="pavucontrol"]    floating enable
-#for_window [class=".scrcpy-wrapped"] floating enable
-#for_window [app_id="anki"]           floating enable
-for_window [app_id="firefox"]        border none
-bindsym $mod+n exec $term -t "notes" -e note 
+bindsym $mod+n exec $term --working-directory ~/Library/Neuron -t "notes" -e vim +'lua New_note()'
 
 # No window title bar
 default_border pixel

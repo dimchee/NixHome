@@ -2,7 +2,7 @@
 {
   imports = [
     ./julia.nix ./python.nix
-    ./mathematica.nix ./agda.nix
+    ./mathematica.nix
   ];
   environment.systemPackages = with pkgs; [
     swiProlog
@@ -27,6 +27,6 @@
     texlab
     pandoc
     graphviz
+    (agda.withPackages (p: [ p.standard-library ]))
   ];
-  environment.pathsToLink = [ "/share/agda" ];
 }

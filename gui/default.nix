@@ -1,16 +1,17 @@
 { config, pkgs, ... }:
 {
+  imports = [ ./zathura ];
   environment.systemPackages = with pkgs; [
     alacritty
     firefox-wayland
     discord
     # blender
-    # inkscape
+    inkscape
     imv mpv
     vlc
     gimp
     libreoffice
-    zathura
     vscodium
+    # (callPackage ./alacritty {})
   ];
 }

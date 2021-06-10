@@ -37,12 +37,15 @@
   nixpkgs.config.allowUnfree = true;
 
   # Driver for wifi card
-  boot.extraModulePackages = [ config.boot.kernelPackages.broadcom_sta ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [
+    broadcom_sta v4l2loopback
+  ];
   boot.initrd.kernelModules = ["wl"];
 
   # Networking
   networking.hostName = "sanctum";
   networking.networkmanager.enable = true;
+  networking.networkmanager.wifi.scanRandMacAddress = false; # for wifi to work
   #networking.networkmanager.wifi.backend = "iwd"; 
   networking.useDHCP = false;
   networking.interfaces.enp3s0.useDHCP = true;
@@ -83,6 +86,7 @@
     BROWSER = "firefox";
     TERMINAL = "alacritty";
   };
+  environment.extraInit = "export PATH=$PATH:$HOME/Code/scripts";
 
   system.stateVersion = "20.09";
 }

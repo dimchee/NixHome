@@ -1,20 +1,17 @@
-local execute = vim.api.nvim_command
 local fn = vim.fn
 
-local install_path = fn.stdpath('data')..'/site/pack/packer/opt/packer.nvim'
+local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
 
 if fn.empty(fn.glob(install_path)) > 0 then
-  execute('!git clone https://github.com/wbthomason/packer.nvim '..install_path)
+  fn.system {
+    'git', 'clone',
+    'https://github.com/wbthomason/packer.nvim', install_path
+  }
+  vim.api.nvim_command'packadd packer.nvim'
 end
-vim.cmd [[packadd packer.nvim]]
-
 
 require('packer').startup(function(use)
-    use {'wbthomason/packer.nvim', opt = true,
-        setup = function()
-            vim.cmd[[command! PackerLoad lua require'plugins']]
-        end
-    }
+    use {'wbthomason/packer.nvim', opt = true}
     use {'lervag/vimtex', ft='tex', setup = function()
 	    vim.g.vimtex_compiler_method = 'tectonic'
 	    vim.g.vimtex_view_method = 'zathura'
@@ -33,6 +30,15 @@ require('packer').startup(function(use)
 	    vim.api.nvim_buf_set_keymap(0, "i", "\\v S", "Š", su)
 	    vim.api.nvim_buf_set_keymap(0, "i", "\\v Z", "Ž", su)
 	    vim.api.nvim_buf_set_keymap(0, "i", "\\Dj ", "Đ", su)
+    end}
+    use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate',
+    config = function()
+        require'nvim-treesitter.configs'.setup {
+          highlight = {
+            enable = true,
+            additional_vim_regex_highlighting = false,
+          },
+        }
     end}
     use {'neovim/nvim-lspconfig', requires = {
         {'onsails/lspkind-nvim'}
@@ -199,7 +205,6 @@ require('packer').startup(function(use)
     --    keymap("n", "<LeftRelease>", ":Gesture finish<CR>", {silent=true})
     --end}
 
-    use {'hkupty/iron.nvim'}
     use {'dstein64/vim-startuptime'}
     --use {'jubnzv/virtual-types.nvim'}
     use {'akinsho/nvim-toggleterm.lua',

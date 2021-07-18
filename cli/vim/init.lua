@@ -1,3 +1,7 @@
+-- Leader key
+vim.g.mapleader = ','
+
+
 --Set tab options for vim
 vim.bo.expandtab = true
 vim.bo.shiftwidth = 4
@@ -40,14 +44,7 @@ require'color'.setup {}
 require'nvim-web-devicons'.setup {default=true}
 require'hardline'.setup {}
 
-package.loaded['notes'] = nil
-require('notes')
+-- package.loaded['notes'] = nil
+-- require('notes')
 require('mappings')
-
-
-local iron = require('iron')
-iron.core.set_config{
-  repl_open_cmd = require'iron.view'.openwin('botright 10 split')
-}
-
--- require'terminal'.setup_old()
+vim.cmd[[command! PackerLoad lua require'plugins']]

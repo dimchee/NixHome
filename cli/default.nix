@@ -1,23 +1,18 @@
 { config, pkgs, ... }:
-let
-  neuronSrc = builtins.fetchTarball "https://github.com/srid/neuron/archive/master.tar.gz";
-in
 {
-#  imports = [./vim ./emacs.nix ];
+  imports = [ ./vim ];
   environment.systemPackages = with pkgs; [
-    neovim # until fix neovim nightly
     wget tree file
     ntfs3g
-    git fzf bat
-    ripgrep
-    tldr
-    niv lorri direnv
+    git bat
+    fzf ripgrep
+    tldr # cli help
     gotop
     youtube-dl
-    mpc_cli ncmpcpp
+    mpc_cli ncmpcpp # music using mpd
     jq go-pup # html scraper
     zip unzip
     ffmpeg imagemagick
-    # (import neuronSrc).default
+    pandoc tectonic graphviz
   ];
 }

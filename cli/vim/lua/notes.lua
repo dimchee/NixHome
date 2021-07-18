@@ -1,10 +1,12 @@
+M = {}
+
 local function sh(cmd)
     local hand = io.popen(cmd)
     local res  = hand:read(); hand:close()
     return res
 end
 
-function On_enter()
+function M.on_enter()
     local word = vim.fn.expand("<cWORD>")
     local link = word:match("%[%w+%]%((.+)%)")
     local zettel =
@@ -17,7 +19,7 @@ function On_enter()
         require'neuron'.enter_link()
     end
 end
-function On_C_enter()
+function M.on_C_enter()
     local word = vim.fn.expand("<cWORD>")
     local link = word:match("%[%w+%]%((.+)%)")
     if link ~= nil then
@@ -46,7 +48,7 @@ local function rand_name()
 end
 
 
-function New_note()
+function M.new_note()
     math.randomseed(os.time())
     local file repeat file = rand_name()
     until not require'plenary.path':new(file):exists()
@@ -56,3 +58,5 @@ function New_note()
         file, time
     ))
 end
+
+return M;

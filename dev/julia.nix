@@ -1,34 +1,23 @@
-{ config, pkgs, ... }:
-let 
-  julia_bin = with pkgs; stdenv.mkDerivation rec {
-    pname = "julia_bin";
-    version = "1.5.3";
-
-    src = fetchurl {
-      url = "https://julialang-s3.julialang.org/bin/linux/x64/1.5/julia-${version}-linux-x86_64.tar.gz";
-      # Use `nix-prefetch-url` to get the hash.
-      sha256 = "1w8masmj96afzm55f2vnlv08wi6vr4iha92k3419gvbgvlwck47i";
-    };
-    nativeBuildInputs = [ autoPatchelfHook ];
-    dontStrip = true; # Stripping the shared libraries breaks dynamic loading.
-    installPhase = ''
-      mkdir -p $out
-      tar -x -C $out -f $src --strip-components 1
-      # Lacks a string table, so we are unable to patch it.
-      rm $out/lib/julia/libccalltest.so.debug
-      # Patch for pre-compilation as the Nix store file time stamps are pinned to the start of the epoch.
-      sed -i 's/\(ftime != trunc(ftime_req, digits=6)\)$/\1 \&\& ftime != 1.0/' $out/share/julia/base/loading.jl
-      grep '&& ftime != 1.0$' $out/share/julia/base/loading.jl > /dev/null || exit 1
+{pkgs, ... }:
+let
+  fixJuliaPkgs = with pkgs; writeScriptBin "fixJuliaPkgs" ''
+    #!/usr/bin/env bash
+    echo "Taken from https://github.com/mayl/juliaShell"
+    PKG_DIR=~/.julia/
+    for ARTIFACT in $(find $PKG_DIR/artifacts/*/bin) 
+    do
+      chmod +w $ARTIFACT
+      ${patchelf}/bin/patchelf \
+        $ARTIFACT \
+        --set-interpreter \
+        "$(cat $NIX_CC/nix-support/dynamic-linker)"
+      chmod -w $ARTIFACT
+    done
     '';
-    meta = with lib; {
-      description =
-        "High-level performance-oriented dynamical language for technical computing";
-      homepage = "https://julialang.org";
-      license = licenses.mit;
-      platforms = platforms.linux;
-    };
-  };
 in
 {
-  environment.systemPackages = [ julia_bin ];
+  environment.systemPackages = with pkgs; [
+    fixJuliaPkgs
+    julia-stable-bin
+  ];
 }

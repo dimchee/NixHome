@@ -1,12 +1,6 @@
 { config, lib, pkgs, inputs, ... }:
 {
-  imports = [
-    ./hardware-configuration.nix
-    ./cachix.nix
-    # ./home.nix
-    ./desk ./cli ./dev ./gui
-  ];
-  
+  imports = [ ./desk ./cli ./dev ./gui ];
   nix = {
     package = pkgs.nixFlakes;
     trustedUsers = [ "root" "dimchee" ];

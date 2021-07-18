@@ -3,8 +3,9 @@ let
   neuronSrc = builtins.fetchTarball "https://github.com/srid/neuron/archive/master.tar.gz";
 in
 {
-  imports = [./vim ./emacs.nix ];
+#  imports = [./vim ./emacs.nix ];
   environment.systemPackages = with pkgs; [
+    neovim # until fix neovim nightly
     wget tree file
     ntfs3g
     git fzf bat
@@ -17,6 +18,6 @@ in
     jq go-pup # html scraper
     zip unzip
     ffmpeg imagemagick
-    (import neuronSrc).default
+    # (import neuronSrc).default
   ];
 }

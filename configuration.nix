@@ -3,7 +3,7 @@
   imports = [
     ./hardware-configuration.nix
     ./cachix.nix
-    ./home.nix
+    # ./home.nix
     ./desk ./cli ./dev ./gui
   ];
   

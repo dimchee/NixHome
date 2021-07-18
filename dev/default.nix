@@ -2,7 +2,7 @@
 {
   imports = [
     ./julia.nix ./python.nix
-    ./mathematica.nix
+    # ./mathematica.nix
   ];
   environment.systemPackages = with pkgs; [
     swiProlog

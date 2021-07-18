@@ -1,20 +1,32 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 {
   imports = [
-    /etc/nixos/hardware-configuration.nix
-    /etc/nixos/cachix.nix
+    ./hardware-configuration.nix
+    ./cachix.nix
     ./home.nix
     ./desk ./cli ./dev ./gui
   ];
   
+  nix = {
+    package = pkgs.nixFlakes;
+    trustedUsers = [ "root" "dimchee" ];
+    extraOptions = ''
+      experimental-features = nix-command ca-references flakes
+      keep-outputs = true
+    '';
+    # Set nixpkgs channel to follow flake
+    nixPath = lib.mkForce [ "nixpkgs=/etc/self/nixos/compat" ];
+    registry.nixpkgs.flake = inputs.nixpkgs;
+  };
+  # Copy system config to allow nixPath to find compat
+  environment.etc.self.source = inputs.self;
 
-  nix.extraOptions = ''
-    keep-outputs = true
-    binary-caches-parallel-connections = 4
-    connect-timeout = 5
-  '';
-  nix.binaryCaches        = ["https://cache.nixos.org"];
-  nix.trustedBinaryCaches = ["https://cache.nixos.org"];
+  # Add current nixpkgs checkout to /etc/nixpkgs for easy browsing
+  environment.etc.nixpkgs.source = inputs.nixpkgs;
+  
+  # Enable Unfree software
+  nixpkgs.config.allowUnfree = true;
+
   
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -29,14 +41,13 @@
   #};
 
   # Power auto tuning for longer battery life
-  powerManagement.enable = true;
-  powerManagement.powertop.enable = true;
-  powerManagement.scsiLinkPolicy = "med_power_with_dipm";
+  powerManagement = {
+    enable = true;
+    powertop.enable = true;
+    scsiLinkPolicy = "med_power_with_dipm";
+  };
 
-  # Enable Unfree software
-  nixpkgs.config.allowUnfree = true;
-
-  # Driver for wifi card
+  # Driver for wifi card (unfree :P)
   boot.extraModulePackages = with config.boot.kernelPackages; [
     broadcom_sta v4l2loopback
   ];
@@ -49,13 +60,15 @@
   #networking.networkmanager.wifi.backend = "iwd"; 
   networking.useDHCP = false;
   networking.interfaces.enp3s0.useDHCP = true;
+  networking.firewall.allowedTCPPorts = [ 80 8888 ];
 
   # Fonts
   fonts = {
-    enableFontDir = true;
+    fontDir.enable = true;
     enableGhostscriptFonts = true;
-    fonts = with pkgs; [ font-awesome nerdfonts ];
+    fonts = with pkgs; [ font-awesome nerdfonts ubuntu_font_family ];
     fontconfig.defaultFonts = {
+      sansSerif = [ "Ubuntu" ];
       monospace = [ "Iosevka Nerd Font Mono" ];
       emoji = [ "Font Awesome Free" ];
     };
@@ -78,7 +91,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.dimchee = {
      isNormalUser = true;
-     extraGroups = [ "wheel" "video" "dialout" "adbusers" "camera" ];
+     extraGroups = [ "wheel" "video" "dialout" "adbusers" "networkmanager" ];
   };
   # System variables
   environment.variables = {
@@ -88,6 +101,6 @@
   };
   environment.extraInit = "export PATH=$PATH:$HOME/Code/scripts";
 
-  system.stateVersion = "20.09";
+  system.stateVersion = "21.05";
 }
 

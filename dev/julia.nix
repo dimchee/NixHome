@@ -20,7 +20,7 @@ let
       sed -i 's/\(ftime != trunc(ftime_req, digits=6)\)$/\1 \&\& ftime != 1.0/' $out/share/julia/base/loading.jl
       grep '&& ftime != 1.0$' $out/share/julia/base/loading.jl > /dev/null || exit 1
     '';
-    meta = with stdenv.lib; {
+    meta = with lib; {
       description =
         "High-level performance-oriented dynamical language for technical computing";
       homepage = "https://julialang.org";

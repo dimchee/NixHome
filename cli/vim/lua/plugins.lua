@@ -8,6 +8,7 @@ if fn.empty(fn.glob(install_path)) > 0 then
 end
 vim.cmd [[packadd packer.nvim]]
 
+
 require('packer').startup(function(use)
     use {'wbthomason/packer.nvim', opt = true,
         setup = function()
@@ -20,10 +21,18 @@ require('packer').startup(function(use)
 	    vim.g.vimtex_view_automatic = true
 	    vim.g.vimtex_compiler_progname = 'nvr'
     end, config = function()
-	vim.api.nvim_buf_set_keymap(
-            0, "n", "<C-a>", ":VimtexCompile<cr>",
-            { silent=true, unique=true }
-	)
+        local su = { silent=true, unique=true }
+	    vim.api.nvim_buf_set_keymap(0, "n", "<C-a>", ":VimtexCompile<cr>", su)
+	    vim.api.nvim_buf_set_keymap(0, "i", "\\v c", "č", su)
+	    vim.api.nvim_buf_set_keymap(0, "i", "\\' c", "ć", su)
+	    vim.api.nvim_buf_set_keymap(0, "i", "\\v s", "š", su)
+	    vim.api.nvim_buf_set_keymap(0, "i", "\\v z", "ž", su)
+	    vim.api.nvim_buf_set_keymap(0, "i", "\\dj ", "đ", su)
+	    vim.api.nvim_buf_set_keymap(0, "i", "\\v C", "Č", su)
+	    vim.api.nvim_buf_set_keymap(0, "i", "\\' C", "Ć", su)
+	    vim.api.nvim_buf_set_keymap(0, "i", "\\v S", "Š", su)
+	    vim.api.nvim_buf_set_keymap(0, "i", "\\v Z", "Ž", su)
+	    vim.api.nvim_buf_set_keymap(0, "i", "\\Dj ", "Đ", su)
     end}
     use {'neovim/nvim-lspconfig', requires = {
         {'onsails/lspkind-nvim'}
@@ -97,6 +106,21 @@ require('packer').startup(function(use)
             };
         }
     end}
+    use {'norcalli/snippets.nvim',
+        config = function()
+            local snippets = require'snippets'
+            snippets.use_suggested_mappings()
+            snippets.snippets = {
+                _global = {
+                    ["\\vc"] = 'č';
+                    ["\\'c"] = 'ć';
+                    ["\\vs"] = 'š';
+                    ["\\vz"] = 'ž';
+                    ["\\dj"] = 'đ'
+                };
+            }
+        end
+    }
     use {'nvim-telescope/telescope.nvim', cmd={'Telescope', 'TeleLoad'},
         requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}},
         config = function()
@@ -115,17 +139,19 @@ require('packer').startup(function(use)
     --use {'tjdevries/nlua.nvim'}
 
     use {'leanprover/lean.vim'}
-    use {'Julian/lean.nvim',
-    	config = function()
-	    require'lean'.setup{
-            infoview = {
-                enable = true
-                -- Clip the infoview to a maximum width
-                max_width = 79,
-            },
-        }
-	end
-    }
+    -- not working som lspconfig shit
+    --use {'Julian/lean.nvim',
+    --requires = {'neovim/nvim-lspconfig'},
+    --	config = function()
+	--    require'lean'.setup{
+    --        infoview = {
+    --            enable = true,
+    --            -- Clip the infoview to a maximum width
+    --            max_width = 79,
+    --        },
+    --    }
+	--end
+    --}
     use {'JuliaEditorSupport/julia-vim'}
     -- if using ft='julia' E117: Unknown function: LaTeXtoUnicode#Refresh
     use {'euclidianAce/BetterLua.vim', ft='lua'}

@@ -25,10 +25,13 @@ exec swayidle -w \
 
 bindsym $mod+Shift+t exec "pkill waybar; $waybar"
 
-for_window [app_id=".*"]        floating enable
-for_window [app_id="firefox"]   floating disable
-for_window [app_id="Alacritty"] floating disable
-for_window [app_id="zathura"]   floating disable
+for_window {
+    [app_id=".*"]        floating enable
+    [app_id="firefox"]   floating disable
+    [app_id="Alacritty"] floating disable
+    [app_id="zathura"]   floating disable
+    [title="^🌴⬆🪟"]     floating enable
+}
 
 bindsym $mod+n exec $term --working-directory ~/Library/Neuron -t "notes" -e vim +'lua New_note()'
 

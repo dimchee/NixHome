@@ -1,6 +1,7 @@
 local keymap = vim.api.nvim_set_keymap
 local k_opts = { silent=true, unique=true }
-keymap("n", "<C-f>", ":Telescope find_files<cr>", k_opts)
+keymap("n", "<C-f>f", ":Telescope find_files<cr>", k_opts)
+keymap("n", "<C-f>b", ":Telescope file_browser<cr>", k_opts)
 keymap("n", "<C-g>", ":Telescope live_grep<cr>", k_opts)
 keymap("n", "<C-b>", ":Telescope buffers show_all_buffers=true<cr>", k_opts)
 keymap("n", ",r", ":luafile ~/NixHome/cli/vim/init.lua<cr>", k_opts)

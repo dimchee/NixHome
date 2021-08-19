@@ -5,6 +5,9 @@
     ./python.nix
     # ./mathematica.nix
   ];
+  environment.variables = {
+    GOPATH = "$HOME/Code/Go";
+  };
   environment.systemPackages = with pkgs; [
     swiProlog
     elmPackages.elm

@@ -25,6 +25,7 @@ let
       cp ${pkgs.tree-sitter.builtGrammars.tree-sitter-python}/parser $out/etc/nvim/parser/python.so
       cp ${pkgs.tree-sitter.builtGrammars.tree-sitter-zig}/parser $out/etc/nvim/parser/zig.so
       cp ${pkgs.tree-sitter.builtGrammars.tree-sitter-latex}/parser $out/etc/nvim/parser/latex.so
+      cp ${pkgs.tree-sitter.builtGrammars.tree-sitter-julia}/parser $out/etc/nvim/parser/julia.so
     '';
   };
 in
@@ -40,6 +41,7 @@ in
     texlab
     rnix-lsp
     sumneko-lua-language-server
+    zls
     
     neovim-remote
     my-nvim

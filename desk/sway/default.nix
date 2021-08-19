@@ -8,7 +8,7 @@
       swaylock-fancy # lockscreen
       xwayland       # for legacy apps
       waybar         # status bar
-      mako libnotify # notification daemon
+      mako#libnotify # notification daemon
       kanshi         # autorandr
       bemenu         # 
       grim           # screenshot

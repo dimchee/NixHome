@@ -1,117 +1,47 @@
 local fn = vim.fn
 
-local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+local packer_path = fn.stdpath('data')..'/site/pack/packer/site/packer.nvim'
+local packer_url = 'https://github.com/wbthomason/packer.nvim'
 
-if fn.empty(fn.glob(install_path)) > 0 then
-  fn.system {
-    'git', 'clone',
-    'https://github.com/wbthomason/packer.nvim', install_path
-  }
-  vim.api.nvim_command'packadd packer.nvim'
+if fn.empty(fn.glob(packer_path)) > 0 then
+    fn.system {'git', 'clone', packer_url, packer_path}
 end
+vim.api.nvim_command'packadd packer.nvim'
 
-require('packer').startup(function(use)
-    use {'wbthomason/packer.nvim', opt = true}
-    use {'lervag/vimtex', ft='tex', setup = function()
-	    vim.g.vimtex_compiler_method = 'tectonic'
-	    vim.g.vimtex_view_method = 'zathura'
-	    vim.g.vimtex_view_automatic = true
-	    vim.g.vimtex_compiler_progname = 'nvr'
-    end, config = function()
-        local su = { silent=true, unique=true }
-	    vim.api.nvim_buf_set_keymap(0, "n", "<C-a>", ":VimtexCompile<cr>", su)
-	    vim.api.nvim_buf_set_keymap(0, "i", "\\v c", "č", su)
-	    vim.api.nvim_buf_set_keymap(0, "i", "\\' c", "ć", su)
-	    vim.api.nvim_buf_set_keymap(0, "i", "\\v s", "š", su)
-	    vim.api.nvim_buf_set_keymap(0, "i", "\\v z", "ž", su)
-	    vim.api.nvim_buf_set_keymap(0, "i", "\\dj ", "đ", su)
-	    vim.api.nvim_buf_set_keymap(0, "i", "\\v C", "Č", su)
-	    vim.api.nvim_buf_set_keymap(0, "i", "\\' C", "Ć", su)
-	    vim.api.nvim_buf_set_keymap(0, "i", "\\v S", "Š", su)
-	    vim.api.nvim_buf_set_keymap(0, "i", "\\v Z", "Ž", su)
-	    vim.api.nvim_buf_set_keymap(0, "i", "\\Dj ", "Đ", su)
-    end}
-    use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate',
+require'packer'.startup(function(use)
+    use {'wbthomason/packer.nvim', opt=true}
+    use {'lervag/vimtex', ft='tex',
+    	setup = require'latex'.setup,
+    	config = require'latex'.config
+    }
+    use {'nvim-treesitter/nvim-treesitter',
     config = function()
         require'nvim-treesitter.configs'.setup {
-          highlight = {
-            enable = true,
-            additional_vim_regex_highlighting = false,
-          },
-        }
-    end}
-    use {'neovim/nvim-lspconfig', requires = {
-        {'onsails/lspkind-nvim'}
-    }, opt = true, event = 'BufReadPost',
-    config = function()
-        local lsp = require'lspconfig'
-        lsp.ccls.setup{}
-        lsp.hls.setup{}
-        --lsp.julials.setup{}
-        lsp.rust_analyzer.setup{}
-        lsp.gopls.setup{}
-        lsp.texlab.setup{}
-        lsp.rnix.setup{}
-        lsp.bashls.setup{}
-        lsp.elmls.setup{}
-        lsp.pyright.setup{}
-        local hand = io.popen('readlink -f $(which lua-language-server)')
-        local sumneko_binary = hand:read(); hand:close()
-        local sumneko_root_path = sumneko_binary..'/../..'
-        lsp.sumneko_lua.setup {
-            cmd = {sumneko_binary, "-E", sumneko_root_path .. "/main.lua"};
-            settings = {
-                Lua = {
-                    runtime = {
-                        version = 'LuaJIT',
-                        -- Setup your lua path
-                        path = vim.split(package.path, ';'),
-                    },
-                    diagnostics = {
-                        -- Get the language server to recognize `vim` global
-                        globals = {'vim'},
-                    },
-                    workspace = {
-                        -- Make the server aware of Neovim runtime files
-                        library = {
-                          [vim.fn.expand('$VIMRUNTIME/lua')] = true,
-                          [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
-                        },
-                    },
-                },
+            highlight = {
+                enable = true,
+                additional_vim_regex_highlighting = false,
             },
         }
-	    --require'lspkind'.init{ withtext= false }
     end}
-    use {'hrsh7th/nvim-compe', requires = {
-        {'GoldsteinE/compe-latex-symbols'}
-    }, opt = true, event = 'BufReadPost',
-    config = function()
-	    vim.o.completeopt = "menuone,noselect"
-	    vim.api.nvim_buf_set_keymap(
-                0, "i", "<C-Space>", "compe#complete()",
-                { silent=true, unique=true }
-	    )
-        require'compe'.setup {
-            enabled = true;
-            autocomplete = true;
-            preselect = 'enable';
-            documentation = true;
-            source = {
-                path = true;
-                buffer = false;
-                calc = false;
-                vsnip = false;
-                nvim_lsp = true;
-                nvim_lua = true;
-                spell = false;
-                tags = false;
-                snippets_nvim = false;
-                treesitter = false;
-                latex_symbols = true
-            };
-        }
-    end}
+    use {'onsails/lspkind-nvim', requires={'neovim/nvim-lspconfig'},
+        config = function() require('lspkind').init {with_text = false} end
+    }
+    use {'neovim/nvim-lspconfig', cmd='LspStart', config = require'lsp'.config}
+    use {'hrsh7th/nvim-compe', requires = {'GoldsteinE/compe-latex-symbols'},
+        cmd = 'CompeLoad', config = require'completion'.config
+    }
+    use {'lukas-reineke/indent-blankline.nvim',
+    	config = function()
+		--Map blankline
+		vim.g.indent_blankline_char_highlight = 'LineNr'
+		require("indent_blankline").setup {
+			char = '┊',
+			buftype_exclude = { 'terminal', 'nofile' },
+			filetype_exclude = { 'help', 'packer' },
+			show_trailing_blankline_indent = false
+		}
+	end
+    }
     use {'norcalli/snippets.nvim',
         config = function()
             local snippets = require'snippets'
@@ -127,16 +57,32 @@ require('packer').startup(function(use)
             }
         end
     }
-    use {'nvim-telescope/telescope.nvim', cmd={'Telescope', 'TeleLoad'},
+    use {'nvim-telescope/telescope.nvim', cmd={'Telescope'},
         requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}},
-        config = function()
-            vim.cmd[[command! -nargs=* TeleLoad]] -- empty command needed
-        end
+        module = 'telescope'
     }
 
-    use {'tjdevries/colorbuddy.nvim'}
-    use {'ojroques/nvim-hardline'}
-    use {'kyazdani42/nvim-web-devicons'}
+    use {'shaunsingh/nord.nvim', setup = function()
+	    vim.o.termguicolors = true
+	    vim.g.nord_disable_background = true
+    end, config = [[require'nord'.set()]]
+    }
+    --use {'ojroques/nvim-hardline', config = function()
+	--	require'hardline'.setup {}
+    --end}
+    use {
+        'hoob3rt/lualine.nvim',
+        requires = {'kyazdani42/nvim-web-devicons', opt = true},
+        config = function() require'lualine'.setup {options = {theme = 'nord'}} end
+    }
+    use {'akinsho/nvim-bufferline.lua',
+        requires = 'kyazdani42/nvim-web-devicons',
+        config = function()
+            vim.opt.termguicolors = true
+            require'bufferline'.setup{}
+        end, keys = { '<leader>bl' }
+    }
+    use {'kyazdani42/nvim-web-devicons', module = 'nvim-web-devicons'}
     --use {'romgrk/barbar.nvim',
     --    requires = {{'kyazdani42/nvim-web-devicons'}}
     --}
@@ -144,32 +90,38 @@ require('packer').startup(function(use)
     use {'rafcamlet/nvim-luapad', cmd = {'Luapad', 'LuaRun', 'Lua'} }
     --use {'tjdevries/nlua.nvim'}
 
-    use {'leanprover/lean.vim'}
-    -- not working som lspconfig shit
-    --use {'Julian/lean.nvim',
-    --requires = {'neovim/nvim-lspconfig'},
-    --	config = function()
-	--    require'lean'.setup{
-    --        infoview = {
-    --            enable = true,
-    --            -- Clip the infoview to a maximum width
-    --            max_width = 79,
-    --        },
-    --    }
-	--end
-    --}
     use {'JuliaEditorSupport/julia-vim'}
     -- if using ft='julia' E117: Unknown function: LaTeXtoUnicode#Refresh
-    use {'euclidianAce/BetterLua.vim', ft='lua'}
+    -- use {'euclidianAce/BetterLua.vim', ft='lua'}
     use {'ziglang/zig.vim', ft='zig'}
     use {'LnL7/vim-nix', ft='nix'}
     use {'glslang/agda-vim', ft='agda'}
-    --use {'edwinb/idris2-vim', commit='099129e08c89d9526ad092b7980afa355ddaa24c'}
-    --use {'ShinKage/nvim-idris2', ft='idris', rocks = {'idris1-lua'}}
+    use {'purescript-contrib/purescript-vim', ft='purescript',
+        config = function()
+            vim.cmd'syntax on'
+            vim.cmd'filetype on'
+            vim.cmd'filetype plugin indent on'
+        end
+    }
+
+    -- use {'Julian/lean.nvim', ft = 'lean', requires = {'neovim/nvim-lspconfig'}}
+    -- use {'edwinb/idris2-vim', commit='099129e08c89d9526ad092b7980afa355ddaa24c'}
+    -- use {'ShinKage/nvim-idris2', ft='idris', rocks = {'idris1-lua'}}
 
     use {'oberblastmeister/neuron.nvim',
         requires = {'nvim-telescope/telescope.nvim'},
-        branch='unstable', cmd='NeuronLoad',
+        branch='unstable',
+        keys = {
+            {'n', 'gzi'},
+            {'n', 'gzz'},
+            {'n', 'gzZ'},
+            {'n', 'gzn'},
+            {'n', 'gzb'},
+            {'n', 'gzB'},
+            {'n', 'gzt'},
+            {'n', 'gz]'},
+            {'n', 'gz['},
+        },
         config = function()
             require'neuron'.setup {
                 virtual_titles = true,
@@ -178,41 +130,21 @@ require('packer').startup(function(use)
                 neuron_dir = "~/Library/Neuron",
                 leader = "gz", -- leader key, remember 'go zettel'
             }
-        vim.cmd[[command! -nargs=* NeuronLoad]] -- empty command needed
     end}
     --use {'kyazdani42/nvim-tree.lua'}
     --use {'tjdevries/astronauta.nvim'}
-
-    --use {'notomo/gesture.nvim', config = function()
-    --    vim.cmd[[set mouse=a]]
-    --    local gesture = require('gesture')
-    --    gesture.register({
-    --        name = "scroll to bottom",
-    --        inputs = { gesture.up(), gesture.down() },
-    --        action = "normal! G"
-    --    })
-    --    gesture.register({
-    --        name = "next tab",
-    --        inputs = { gesture.right() },
-    --        action = "bnext"
-    --    })
-    --    gesture.register({
-    --        name = "previous tab",
-    --        inputs = { gesture.left() },
-    --        action = function() vim.cmd("bprevious") end
-    --    })
-    --    keymap("n", "<LeftDrag>", ":Gesture draw<CR>", {silent=true})
-    --    keymap("n", "<LeftRelease>", ":Gesture finish<CR>", {silent=true})
-    --end}
+    --use {'notomo/gesture.nvim'}
 
     use {'dstein64/vim-startuptime'}
     --use {'jubnzv/virtual-types.nvim'}
     use {'akinsho/nvim-toggleterm.lua',
+        module = "toggleterm.terminal",
         config = function()
             local opt = { silent=true, unique=true }
 	        require("toggleterm").setup{
 		        setup = 20,
 		        direction = 'horizontal',
+                persist_size = false,
 		        open_mapping = '<leader><leader>t',
 		        start_in_insert = true,
 		        close_on_exit = true,
@@ -220,7 +152,7 @@ require('packer').startup(function(use)
 	                vim.api.nvim_buf_set_keymap(0, "t", "<leader><leader>t", ":ToggleTerm", opt)
                 end
 	        }
-            function make_repl(cmd)
+            function Make_repl(cmd)
 	            local repl = require('toggleterm.terminal').Terminal:new({
 	                cmd = cmd,
                     setup = 20,
@@ -233,3 +165,7 @@ require('packer').startup(function(use)
         end
     }
 end)
+
+-- ToDo
+-- https://github.com/jghauser/follow-md-links.nvim
+-- vim-which-key 

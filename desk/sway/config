@@ -15,6 +15,7 @@ set $waybar waybar --config /home/dimchee/NixHome/desk/waybar/config
 output * bg /home/dimchee/NixHome/desk/bg/Suma.png fill
 exec $waybar
 exec wl-paste -t text --watch clipman store
+exec mako # notification daemon
 
 # Idle configuration
 exec swayidle -w \
@@ -31,6 +32,8 @@ for_window {
     [app_id="Alacritty"] floating disable
     [app_id="zathura"]   floating disable
     [title="^🌴⬆🪟"]     floating enable
+    [title="app"]     floating enable
+    [title="Manekraft"]     floating enable
 }
 
 bindsym $mod+n exec $term --working-directory ~/Library/Neuron -t "notes" -e vim +'lua New_note()'

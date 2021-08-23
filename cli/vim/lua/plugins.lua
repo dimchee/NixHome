@@ -1,6 +1,6 @@
 local fn = vim.fn
 
-local packer_path = fn.stdpath('data')..'/site/pack/packer/site/packer.nvim'
+local packer_path = fn.stdpath('data')..'/site/pack/packer/opt/packer.nvim'
 local packer_url = 'https://github.com/wbthomason/packer.nvim'
 
 if fn.empty(fn.glob(packer_path)) > 0 then

@@ -1,99 +1,70 @@
-{ config, lib, pkgs, inputs, ... }:
-{
-  imports = [ ./desk ./cli ./dev ./gui ];
-  nix = {
-    package = pkgs.nixFlakes;
-    trustedUsers = [ "root" "dimchee" ];
-    extraOptions = ''
-      experimental-features = nix-command ca-references flakes
-      keep-outputs = true
-    '';
-    # Set nixpkgs channel to follow flake
-    nixPath = lib.mkForce [ "nixpkgs=/etc/self/nixos/compat" ];
-    registry.nixpkgs.flake = inputs.nixpkgs;
+{ config, pkgs, lib, ... }:
+let
+  unstable = import <nixos-unstable> {};
+  configDir = "/home/dimchee/NixHome/";
+  nixFlakes = with pkgs; writeShellScriptBin "nixFlakes" ''
+    exec ${nixUnstable}/bin/nix --experimental-features "flakes" "$@"
+  '';
+  home-manager = builtins.fetchGit {
+    url = "https://github.com/rycee/home-manager.git";
+    rev = "f5adb9be829f487f99bcc0f1884f74ddb85f70c8";
+    ref = "release-21.05";
   };
-  # Copy system config to allow nixPath to find compat
-  environment.etc.self.source = inputs.self;
+in {
+  imports =
+    [
+      # (import "${home-manager}/nixos")
+      ./hardware/alvearium.nix
+      ./vim ./gnome
+    ];
+  # home-manager.users.dimchee = import ./home.nix;
+  # home-manager.useGlobalPkgs = true;
+  environment.variables.NIXOS_CONFIG = configDir + "configuration.nix";
+  security.sudo.extraConfig = "Defaults env_keep+=NIXOS_CONFIG";
 
-  # Add current nixpkgs checkout to /etc/nixpkgs for easy browsing
-  environment.etc.nixpkgs.source = inputs.nixpkgs;
-  
-  # Enable Unfree software
-  nixpkgs.config.allowUnfree = true;
-
-  
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.timeout = 0;
-  #boot.loader.grub = {
-  #  enable = true;
-  #  device = "/dev/sda";
-  #  efiSupport = true;
-  #  splashImage = "/etc/nixos/dotfiles/bg/Suma.png";
-  #  forcei686 = true;
-  #};
-
-  # Power auto tuning for longer battery life
-  powerManagement = {
+  #boot.plymouth.enable = true;
+  boot.loader.grub = {
     enable = true;
-    powertop.enable = true;
-    scsiLinkPolicy = "med_power_with_dipm";
-  };
-
-  # Driver for wifi card (unfree :P)
-  boot.extraModulePackages = with config.boot.kernelPackages; [
-    broadcom_sta v4l2loopback
-  ];
-  boot.initrd.kernelModules = ["wl"];
-
-  # Networking
-  networking.hostName = "sanctum";
-  networking.networkmanager.enable = true;
-  networking.networkmanager.wifi.scanRandMacAddress = false; # for wifi to work
-  #networking.networkmanager.wifi.backend = "iwd"; 
-  networking.useDHCP = false;
-  networking.interfaces.enp3s0.useDHCP = true;
-  networking.firewall.allowedTCPPorts = [ 80 8888 ];
-
-  # Fonts
-  fonts = {
-    fontDir.enable = true;
-    enableGhostscriptFonts = true;
-    fonts = with pkgs; [ font-awesome nerdfonts ubuntu_font_family ];
-    fontconfig.defaultFonts = {
-      sansSerif = [ "Ubuntu" ];
-      monospace = [ "Iosevka Nerd Font Mono" ];
-      emoji = [ "Font Awesome Free" ];
-    };
+    version = 2;
+    device = "/dev/sda"; # or "nodev" for efi only
   };
 
   time.timeZone = "Europe/Belgrade";
-  environment.systemPackages = with pkgs; [ cage cachix ];
+  networking.hostName = "alvearium";
 
-  programs.adb.enable = true;     # adbusers group
-  programs.light.enable = true;   # video group
-  programs.gphoto2.enable = true; # camera group
+  networking.useDHCP = false;
+  networking.interfaces.enp2s0.useDHCP = true;
+  networking.firewall.allowedTCPPortRanges = [ { from = 1714; to = 1764; } ]; # gsconnect
+  networking.firewall.allowedUDPPortRanges = [ { from = 1714; to = 1764; } ]; # gsconnect
 
-  # Sound
-  hardware.pulseaudio.enable = true;
-
-  # Bluetooth
-  hardware.pulseaudio.package = pkgs.pulseaudioFull;
-  # hardware.bluetooth.enable = true;
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+  
   users.users.dimchee = {
-     isNormalUser = true;
-     extraGroups = [ "wheel" "video" "dialout" "adbusers" "networkmanager" ];
+    isNormalUser = true;
+    extraGroups = [ "wheel" ];
   };
-  # System variables
-  environment.variables = {
-    EDITOR = "vim";
-    BROWSER = "firefox";
-    TERMINAL = "alacritty";
+
+  # Gaming
+  programs.steam.enable = true;
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+    "steam" "steam-original" "steam-runtime"
+  ];
+  environment.systemPackages = with pkgs; [
+    lutris nixFlakes
+    wget git ntfs3g ripgrep
+    firefox
+    alacritty
+  ];
+
+  #services.gvfs.enable = true; # problems with trash, android mount?
+
+  fonts = {
+    fontDir.enable = true;
+    enableGhostscriptFonts = true;
+    fonts = with pkgs; [
+      font-awesome
+       (nerdfonts.override { fonts = [ "FiraCode" "Iosevka" ]; })
+    ];
   };
-  environment.extraInit = "export PATH=$PATH:$HOME/Code/scripts";
 
   system.stateVersion = "21.05";
 }

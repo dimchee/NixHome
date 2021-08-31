@@ -138,7 +138,6 @@ require'packer'.startup(function(use)
     use {'dstein64/vim-startuptime'}
     --use {'jubnzv/virtual-types.nvim'}
     use {'akinsho/nvim-toggleterm.lua',
-        module = "toggleterm.terminal",
         config = function()
             local opt = { silent=true, unique=true }
 	        require("toggleterm").setup{
@@ -153,7 +152,7 @@ require'packer'.startup(function(use)
                 end
 	        }
             function Make_repl(cmd)
-	            local repl = require('toggleterm.terminal').Terminal:new({
+	            local repl = require'nvim-toggleterm'.Terminal:new({
 	                cmd = cmd,
                     setup = 20,
                     direction = 'horizontal',

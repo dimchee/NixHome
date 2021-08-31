@@ -25,7 +25,7 @@ vim.api.nvim_set_keymap('n', '<leader>g' , tele_do'live_grep()', k_opts)
 --keymap("n", "<C-b>", ":Telescope buffers show_all_buffers=true<cr>", k_opts)
 keymap("n", ",r", ":luafile ~/NixHome/cli/vim/init.lua<cr>", k_opts)
 
-keymap("n", "<leader><leader>", "<cmd>nohls<cr>", k_opts)
+keymap("n", "<space><space>", "<cmd>nohls<cr>", k_opts)
 
 function Make_buf_repl()
     local repls = {haskell='ghci', prolog='swipl', python='python', julia='julia'}

@@ -12,17 +12,6 @@ let
     auto_update         "yes"
   '';
 in {
-  #systemd.user.sockets.mpd = {
-  #  description = "Music Player Daemon Socket";
-  #  wantedBy = [ "sockets.target" ];
-  #  listenStreams = [ "127.0.0.1" ];
-  #  socketConfig = {
-  #    Backlog = 5;
-  #    KeepAlive = true;
-  #    PassCredentials = true;
-  #  };
-  #};
-
   systemd.user.services.mpd = {
     description = "Music Player Daemon";
     after = [ "network.target" "sound.target" ];

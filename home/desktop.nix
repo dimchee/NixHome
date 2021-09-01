@@ -64,10 +64,10 @@
     enable = true;
     wrapperFeatures.gtk = true;
     config = {
-      # modifier = "Mod4";
+      modifier = "Mod4";
       terminal = "alacritty";
       menu = "bemenu-run --fn 12";
-      output."*".bg = "~/NixHome/desktop/suma.png fill";
+      output."*".bg = "${toString ./suma.png} fill";
       startup = [{
         command = "${pkgs.waybar}/bin/waybar";
       } {

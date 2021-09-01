@@ -1,14 +1,14 @@
 {pkgs, config, ...}:
 {
   imports = [
-    ./desktop
+    ./desktop ./gui.nix
   ];
   programs.home-manager = {
     enable = true;
   };
   programs.bash = {
     enable = true;
-    shellAliases.home-manager = "home-manager -f ~/NixHome/home.nix";
+    shellAliases.home-manager = "home-manager -f ~/NixHome/home/default.nix";
   };
 
 }

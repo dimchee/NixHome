@@ -15,32 +15,31 @@ in {
     [
       # (import "${home-manager}/nixos")
       ./hardware/alvearium.nix
-      ./vim ./gnome
+      ./modules/cli.nix ./modules/gnome.nix ./modules/dev
     ];
+  # programs.sway.enable = true;
+  # programs.waybar.enable = false;
   # home-manager.users.dimchee = import ./home.nix;
   # home-manager.useGlobalPkgs = true;
   environment.variables.NIXOS_CONFIG = configDir + "configuration.nix";
   security.sudo.extraConfig = "Defaults env_keep+=NIXOS_CONFIG";
 
-  #boot.plymouth.enable = true;
-  boot.loader.grub = {
-    enable = true;
-    version = 2;
-    device = "/dev/sda"; # or "nodev" for efi only
-  };
-
   time.timeZone = "Europe/Belgrade";
-  networking.hostName = "alvearium";
 
   networking.useDHCP = false;
-  networking.interfaces.enp2s0.useDHCP = true;
   networking.firewall.allowedTCPPortRanges = [ { from = 1714; to = 1764; } ]; # gsconnect
   networking.firewall.allowedUDPPortRanges = [ { from = 1714; to = 1764; } ]; # gsconnect
+  networking.firewall.allowedTCPPorts = [ 80 8888 ];
 
+  programs.adb.enable = true;     # adbusers group
+  programs.light.enable = true;   # video group
+  programs.gphoto2.enable = true; # camera group
   
   users.users.dimchee = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
+    extraGroups = [
+      "wheel" "video" "dialout" "adbusers" "networkmanager"
+    ];
   };
 
   # Gaming
@@ -50,10 +49,17 @@ in {
   ];
   environment.systemPackages = with pkgs; [
     lutris nixFlakes
-    wget git ntfs3g ripgrep
     firefox
     alacritty
+    cage cachix
   ];
+  environment.variables = {
+    EDITOR = "vim";
+    BROWSER = "firefox";
+    TERMINAL = "alacritty";
+    PATH = "$PATH:$HOME/Code/scripts";
+  };
+
 
   #services.gvfs.enable = true; # problems with trash, android mount?
 
@@ -61,9 +67,14 @@ in {
     fontDir.enable = true;
     enableGhostscriptFonts = true;
     fonts = with pkgs; [
-      font-awesome
-       (nerdfonts.override { fonts = [ "FiraCode" "Iosevka" ]; })
+      font-awesome ubuntu_font_family
+      (nerdfonts.override { fonts = [ "FiraCode" "Iosevka" ]; })
     ];
+    #fontconfig.defaultFonts = {
+    #  sansSerif = [ "Ubuntu" ];
+    #  monospace = [ "Iosevka Nerd Font Mono" ];
+    #  emoji = [ "Font Awesome Free" ];
+    #};
   };
 
   system.stateVersion = "21.05";

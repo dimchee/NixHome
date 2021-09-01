@@ -4,14 +4,45 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
+  # Networking
+  networking.hostName = "sanctum";
+  networking.interfaces.enp3s0.useDHCP = true;
+  networking.networkmanager.enable = true;
+  networking.networkmanager.wifi.scanRandMacAddress = false; # for wifi to work
+  #networking.networkmanager.wifi.backend = "iwd"; 
+  
   imports =
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
+  # Use the systemd-boot EFI boot loader.
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.timeout = 0;
+  #boot.loader.grub = {
+  #  enable = true;
+  #  device = "/dev/sda";
+  #  efiSupport = true;
+  #  splashImage = "/etc/nixos/dotfiles/bg/Suma.png";
+  #  forcei686 = true;
+  #};
+
   boot.initrd.availableKernelModules = [ "ahci" "xhci_pci" "usb_storage" "sd_mod" "sr_mod" ];
-  boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [ ];
+
+  # wifi card drivers (unfree :P)
+  boot.initrd.kernelModules = [ "wl" ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [
+    broadcom_sta v4l2loopback
+  ];
+  
+  # Power auto tuning for longer battery life
+  powerManagement = {
+    enable = true;
+    powertop.enable = true;
+    scsiLinkPolicy = "med_power_with_dipm";
+    cpuFreqGovernor = lib.mkDefault "powersave";
+  };
 
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/bb33147d-6374-4aa7-b89e-1dd8464124b3";
@@ -28,5 +59,8 @@
     ];
 
   nix.maxJobs = lib.mkDefault 2;
-  powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
+
+  # Sound
+  hardware.pulseaudio.enable = true;
+  sound.enable = true;
 }

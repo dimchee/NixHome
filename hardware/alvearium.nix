@@ -1,10 +1,19 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
+  networking.hostName = "alvearium";
+  networking.interfaces.enp2s0.useDHCP = true;
   imports =
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
+  #boot.plymouth.enable = true;
+  boot.loader.grub = {
+    enable = true;
+    version = 2;
+    device = "/dev/sda"; # or "nodev" for efi only
+  };
+  
   boot.initrd.availableKernelModules = [
     "ahci" "ohci_pci" "ehci_pci" "pata_atiixp" "firewire_ohci"
     "pata_marvell" "usb_storage" "usbhid" "sd_mod" "sr_mod"

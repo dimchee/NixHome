@@ -1,28 +1,12 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 let
-  unstable = import <nixos-unstable> {};
-  configDir = "/home/dimchee/NixHome/";
-  nixFlakes = with pkgs; writeShellScriptBin "nixFlakes" ''
-    exec ${nixUnstable}/bin/nix --experimental-features "flakes" "$@"
-  '';
-  home-manager = builtins.fetchGit {
-    url = "https://github.com/rycee/home-manager.git";
-    rev = "f5adb9be829f487f99bcc0f1884f74ddb85f70c8";
-    ref = "release-21.05";
-  };
 in {
-  imports =
-    [
-      # (import "${home-manager}/nixos")
-      ./hardware/alvearium.nix
-      ./modules/cli.nix ./modules/gnome.nix ./modules/dev
-    ];
-  # programs.sway.enable = true;
-  # programs.waybar.enable = false;
-  # home-manager.users.dimchee = import ./home.nix;
-  # home-manager.useGlobalPkgs = true;
-  environment.variables.NIXOS_CONFIG = configDir + "configuration.nix";
-  security.sudo.extraConfig = "Defaults env_keep+=NIXOS_CONFIG";
+  imports = [ ./cli.nix ./dev ./nixpkgs.nix ];
+
+  # nixos-rebuild switch
+  # environment.variables.NIXOS_CONFIG =
+  #  "/home/dimchee/NixHome/configuration.nix";
+  # security.sudo.extraConfig = "Defaults env_keep+=NIXOS_CONFIG";
 
   time.timeZone = "Europe/Belgrade";
 
@@ -42,15 +26,8 @@ in {
     ];
   };
 
-  # Gaming
-  programs.steam.enable = true;
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-    "steam" "steam-original" "steam-runtime"
-  ];
   environment.systemPackages = with pkgs; [
-    lutris nixFlakes
-    firefox
-    alacritty
+    firefox alacritty
     cage cachix
   ];
   environment.variables = {

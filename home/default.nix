@@ -1,7 +1,7 @@
 {pkgs, config, ...}:
 {
   imports = [
-    ./desktop ./gui.nix
+    ./desktop.nix ./gui.nix
   ];
   programs.home-manager = {
     enable = true;

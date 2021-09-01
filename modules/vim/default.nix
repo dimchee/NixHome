@@ -1,11 +1,9 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 let
-  unstable = import <nixos-unstable> {};
-  nvim_overlay = builtins.fetchTarball "https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz";
-  my-nvim = unstable.symlinkJoin {
+  my-nvim = pkgs.symlinkJoin {
     name = "nvim-my-nightly";
-    paths = [ unstable.neovim ];
-    buildInputs = [ unstable.makeWrapper ];
+    paths = [ pkgs.neovim ];
+    buildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
       wrapProgram $out/bin/nvim --set XDG_CONFIG_HOME $out/etc
       ln -s $out/bin/nvim $out/bin/vim
@@ -19,21 +17,21 @@ let
       ln -s /home/dimchee/NixHome/modules/vim/plugin  $out/etc/nvim/plugin
       ln -s /home/dimchee/NixHome/modules/vim/init.lua  $out/etc/nvim/init.lua
       mkdir -p $out/etc/nvim/parser
-      cp ${unstable.tree-sitter.builtGrammars.tree-sitter-c}/parser $out/etc/nvim/parser/c.so
-      cp ${unstable.tree-sitter.builtGrammars.tree-sitter-nix}/parser $out/etc/nvim/parser/nix.so
-      cp ${unstable.tree-sitter.builtGrammars.tree-sitter-rust}/parser $out/etc/nvim/parser/rust.so
-      cp ${unstable.tree-sitter.builtGrammars.tree-sitter-go}/parser $out/etc/nvim/parser/go.so
-      cp ${unstable.tree-sitter.builtGrammars.tree-sitter-lua}/parser $out/etc/nvim/parser/lua.so
-      cp ${unstable.tree-sitter.builtGrammars.tree-sitter-python}/parser $out/etc/nvim/parser/python.so
-      cp ${unstable.tree-sitter.builtGrammars.tree-sitter-zig}/parser $out/etc/nvim/parser/zig.so
-      cp ${unstable.tree-sitter.builtGrammars.tree-sitter-latex}/parser $out/etc/nvim/parser/latex.so
-      cp ${unstable.tree-sitter.builtGrammars.tree-sitter-julia}/parser $out/etc/nvim/parser/julia.so
+      cp ${pkgs.tree-sitter.builtGrammars.tree-sitter-c}/parser $out/etc/nvim/parser/c.so
+      cp ${pkgs.tree-sitter.builtGrammars.tree-sitter-nix}/parser $out/etc/nvim/parser/nix.so
+      cp ${pkgs.tree-sitter.builtGrammars.tree-sitter-rust}/parser $out/etc/nvim/parser/rust.so
+      cp ${pkgs.tree-sitter.builtGrammars.tree-sitter-go}/parser $out/etc/nvim/parser/go.so
+      cp ${pkgs.tree-sitter.builtGrammars.tree-sitter-lua}/parser $out/etc/nvim/parser/lua.so
+      cp ${pkgs.tree-sitter.builtGrammars.tree-sitter-python}/parser $out/etc/nvim/parser/python.so
+      cp ${pkgs.tree-sitter.builtGrammars.tree-sitter-zig}/parser $out/etc/nvim/parser/zig.so
+      cp ${pkgs.tree-sitter.builtGrammars.tree-sitter-latex}/parser $out/etc/nvim/parser/latex.so
+      cp ${pkgs.tree-sitter.builtGrammars.tree-sitter-julia}/parser $out/etc/nvim/parser/julia.so
     '';
   };
 in
 {
-  nixpkgs.overlays = [ (import nvim_overlay) ];
-  environment.systemPackages = with unstable; [
+  nixpkgs.overlays = [ inputs.neovim.overlay ];
+  environment.systemPackages = with pkgs; [
     haskellPackages.haskell-language-server
     nodePackages.pyright
     elmPackages.elm-language-server
@@ -47,10 +45,11 @@ in
     
     neovim-remote
     my-nvim
+    inputs.neuron.packages.x86_64-linux.neuron
   ];
-  #xdg.dataFile."nvim/site/pack/packer/start/telescope-fzf-native.nvim/build/libfzf.so".source = "${unstable.telescope-fzf-native}/build/libfzf.so";
-  #xdg.configFile."nvim/parser/c.so".source = "${unstable.tree-sitter.builtGrammars.tree-sitter-c}/parser";
-  #xdg.configFile."nvim/parser/lua.so".source = "${unstable.tree-sitter.builtGrammars.tree-sitter-lua}/parser";
-  #xdg.configFile."nvim/parser/rust.so".source = "${unstable.tree-sitter.builtGrammars.tree-sitter-rust}/parser";
-  #xdg.configFile."nvim/parser/python.so".source = "${unstable.tree-sitter.builtGrammars.tree-sitter-python}/parser";
+  #xdg.dataFile."nvim/site/pack/packer/start/telescope-fzf-native.nvim/build/libfzf.so".source = "${pkgs.telescope-fzf-native}/build/libfzf.so";
+  #xdg.configFile."nvim/parser/c.so".source = "${pkgs.tree-sitter.builtGrammars.tree-sitter-c}/parser";
+  #xdg.configFile."nvim/parser/lua.so".source = "${pkgs.tree-sitter.builtGrammars.tree-sitter-lua}/parser";
+  #xdg.configFile."nvim/parser/rust.so".source = "${pkgs.tree-sitter.builtGrammars.tree-sitter-rust}/parser";
+  #xdg.configFile."nvim/parser/python.so".source = "${pkgs.tree-sitter.builtGrammars.tree-sitter-python}/parser";
 }

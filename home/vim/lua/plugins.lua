@@ -96,6 +96,7 @@ require'packer'.startup(function(use)
     use {'ziglang/zig.vim', ft='zig'}
     use {'LnL7/vim-nix', ft='nix'}
     use {'glslang/agda-vim', ft='agda'}
+    use {'akinsho/flutter-tools.nvim', requires = 'nvim-lua/plenary.nvim'}
     use {'purescript-contrib/purescript-vim', ft='purescript',
         config = function()
             vim.cmd'syntax on'

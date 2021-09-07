@@ -1,6 +1,7 @@
 { inputs, pkgs, config, ... }:
 {
   nix = {
+    readOnlyStore = false;
     package = pkgs.nixFlakes;
     trustedUsers = [ "root" "dimchee" ];
     extraOptions = ''

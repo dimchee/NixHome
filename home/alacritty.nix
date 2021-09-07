@@ -1,7 +1,9 @@
 {pkgs, ...}:
-{
+let unstable = import <nixos-unstable>{};
+in {
   programs.alacritty = {
     enable = true;
+    package = unstable.alacritty;
     settings = {
       background_opacity = 0.8;
       font = {

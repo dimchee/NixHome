@@ -139,7 +139,6 @@
     swaylock
     swayidle
     wl-clipboard clipman
-    alacritty # Alacritty is the default terminal in the config
     bemenu # maybe wofi?
     grim slurp # screen capture
   ];

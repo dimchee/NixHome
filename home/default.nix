@@ -1,7 +1,7 @@
-{pkgs, config, ...}:
+{pkgs, config, lib, ...}:
 {
   imports = [
-    ./desktop.nix ./gui.nix
+    ./desktop.nix ./gui.nix ./vim
   ];
   programs.home-manager = {
     enable = true;
@@ -10,5 +10,8 @@
     enable = true;
     shellAliases.home-manager = "home-manager -f ~/NixHome/home/default.nix";
   };
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+    "android-studio-stable"
+  ];
 
 }

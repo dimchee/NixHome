@@ -13,9 +13,9 @@ let
       # ln -s ${toString ./init.lua}  $out/etc/nvim/init.lua
       # Not working couse of flakes (first copy to store, then builds)
       # This is quick and dirty fix
-      ln -s /home/dimchee/NixHome/modules/vim/lua  $out/etc/nvim/lua
-      ln -s /home/dimchee/NixHome/modules/vim/plugin  $out/etc/nvim/plugin
-      ln -s /home/dimchee/NixHome/modules/vim/init.lua  $out/etc/nvim/init.lua
+      ln -s /home/dimchee/NixHome/home/vim/lua  $out/etc/nvim/lua
+      ln -s /home/dimchee/NixHome/home/vim/plugin  $out/etc/nvim/plugin
+      ln -s /home/dimchee/NixHome/home/vim/init.lua  $out/etc/nvim/init.lua
       mkdir -p $out/etc/nvim/parser
       cp ${pkgs.tree-sitter.builtGrammars.tree-sitter-c}/parser $out/etc/nvim/parser/c.so
       cp ${pkgs.tree-sitter.builtGrammars.tree-sitter-nix}/parser $out/etc/nvim/parser/nix.so
@@ -47,9 +47,4 @@ in
     my-nvim
     inputs.neuron.packages.x86_64-linux.neuron
   ];
-  #xdg.dataFile."nvim/site/pack/packer/start/telescope-fzf-native.nvim/build/libfzf.so".source = "${pkgs.telescope-fzf-native}/build/libfzf.so";
-  #xdg.configFile."nvim/parser/c.so".source = "${pkgs.tree-sitter.builtGrammars.tree-sitter-c}/parser";
-  #xdg.configFile."nvim/parser/lua.so".source = "${pkgs.tree-sitter.builtGrammars.tree-sitter-lua}/parser";
-  #xdg.configFile."nvim/parser/rust.so".source = "${pkgs.tree-sitter.builtGrammars.tree-sitter-rust}/parser";
-  #xdg.configFile."nvim/parser/python.so".source = "${pkgs.tree-sitter.builtGrammars.tree-sitter-python}/parser";
 }

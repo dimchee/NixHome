@@ -28,7 +28,7 @@ keymap("n", ",r", ":luafile ~/NixHome/cli/vim/init.lua<cr>", k_opts)
 keymap("n", "<space><space>", "<cmd>nohls<cr>", k_opts)
 
 function Make_buf_repl()
-    local repls = {haskell='ghci', prolog='swipl', python='python', julia='julia'}
+    local repls = {haskell='ghci', prolog='swipl', python='python'}--, julia='julia'}
     local ft = vim.api.nvim_buf_get_option(0, 'filetype')
     if repls[ft] then
         Cur_repl = Make_repl(repls[ft])

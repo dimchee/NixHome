@@ -31,12 +31,12 @@
           ./modules/common.nix
           ./modules/gnome.nix
           ./modules/gaming.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.dimchee = import ./home;
-          }
+          #home-manager.nixosModules.home-manager
+          #{
+          #  home-manager.useGlobalPkgs = true;
+          #  home-manager.useUserPackages = true;
+          #  home-manager.users.dimchee = import ./home;
+          #}
         ];
         extraArgs = { inherit inputs; };
       };

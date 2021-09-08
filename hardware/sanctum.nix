@@ -31,6 +31,10 @@
   boot.kernelModules = [ "kvm-intel" ];
 
   # wifi card drivers (unfree :P)
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) [
+      "broadcom-sta"
+    ];
   boot.initrd.kernelModules = [ "wl" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [
     broadcom_sta v4l2loopback
@@ -59,6 +63,8 @@
     ];
 
   nix.maxJobs = lib.mkDefault 2;
+
+  hardware.opengl.enable = true;
 
   # Sound
   hardware.pulseaudio.enable = true;

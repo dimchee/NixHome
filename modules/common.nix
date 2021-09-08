@@ -28,7 +28,7 @@ in {
 
   environment.systemPackages = with pkgs; [
     firefox alacritty
-    cage cachix
+    cage brave
   ];
   environment.variables = {
     EDITOR = "vim";

@@ -1,5 +1,6 @@
 {pkgs, config, ...}:
-{
+let unstable = import<nixos-unstable> {};
+in {
   programs.waybar = {
     enable = true;
     systemd.enable = true;
@@ -63,6 +64,7 @@
   wayland.windowManager.sway = {
     enable = true;
     wrapperFeatures.gtk = true;
+    package = unstable.sway;
     config = {
       modifier = "Mod4";
       terminal = "alacritty";
@@ -139,7 +141,6 @@
     swaylock
     swayidle
     wl-clipboard clipman
-    alacritty # Alacritty is the default terminal in the config
     bemenu # maybe wofi?
     grim slurp # screen capture
   ];

@@ -22,7 +22,21 @@ require'packer'.startup(function(use)
                 additional_vim_regex_highlighting = false,
             },
         }
+	    local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+	    parser_config.markdown = {
+	        install_info = {
+	    	    url = "https://github.com/ikatyang/tree-sitter-markdown",
+	    		files = {"src/parser.c", "src/scanner.cc"}
+	        },
+	        filetype = "markdown",
+	    }
     end}
+    use {'jghauser/follow-md-links.nvim',
+        config = function()
+            require('follow-md-links')
+            vim.api.nvim_set_keymap('', '<bs>', ':edit #<cr>', {noremap = true, silent = true})
+        end
+    }
     use {'onsails/lspkind-nvim', requires={'neovim/nvim-lspconfig'},
         config = function() require('lspkind').init {with_text = false} end
     }
@@ -96,7 +110,25 @@ require'packer'.startup(function(use)
     use {'ziglang/zig.vim', ft='zig'}
     use {'LnL7/vim-nix', ft='nix'}
     use {'glslang/agda-vim', ft='agda'}
-    use {'akinsho/flutter-tools.nvim', requires = 'nvim-lua/plenary.nvim'}
+    use {'akinsho/flutter-tools.nvim', requires = 'nvim-lua/plenary.nvim',
+        config = function()
+            flutter_sdk = vim.fn.resolve(vim.fn.getenv'FLUTTER_SDK')
+            require'flutter-tools'.setup {
+                widget_guides = {
+                    enabled = true
+                },
+                flutter_path = flutter_sdk.."/bin/flutter",
+                lsp = {
+                    on_attach = require'lsp'.on_attach
+                }
+            }
+            vim.api.nvim_buf_set_keymap(
+                0, "n", "<leader>ot", "<cmd>FlutterOutlineToggle<cr>",
+                { silent=true, unique=true }
+            )
+            require'telescope'.load_extension'flutter'
+        end, ft='dart'
+    }
     use {'purescript-contrib/purescript-vim', ft='purescript',
         config = function()
             vim.cmd'syntax on'

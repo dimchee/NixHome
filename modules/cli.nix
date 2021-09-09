@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 {
-  imports = [ ./vim.nix ];
+  # imports = [ ./vim.nix ]; # using home-manager now
   environment.systemPackages = with pkgs; [
     wget tree file
     ntfs3g

@@ -16,6 +16,7 @@ vim.api.nvim_set_keymap('n', '<leader>ff', tele_do'find_files()', k_opts)
 vim.api.nvim_set_keymap('n', '<leader>fb', tele_do'file_browser()', k_opts)
 vim.api.nvim_set_keymap('n', '<leader>/' , tele_do'current_buffer_fuzzy_find()', k_opts)
 vim.api.nvim_set_keymap('n', '<leader>g' , tele_do'live_grep()', k_opts)
+vim.api.nvim_set_keymap('n', '<leader>cf', tele_do'find_files{cwd="~/NixHome/home/vim"}', k_opts)
 --vim.api.nvim_set_keymap('n', '<leader>ht', tele_do'help_tags()', k_opts)
 --vim.api.nvim_set_keymap('n', '<leader>t' , tele_do'tags()', k_opts)
 --vim.api.nvim_set_keymap('n', '<leader>sg', tele_do'grep_string()', k_opts)
@@ -23,7 +24,7 @@ vim.api.nvim_set_keymap('n', '<leader>g' , tele_do'live_grep()', k_opts)
 --vim.api.nvim_set_keymap('n', '<leader>?' , tele_do'oldfiles()', k_opts)
 
 --keymap("n", "<C-b>", ":Telescope buffers show_all_buffers=true<cr>", k_opts)
-keymap("n", ",r", ":luafile ~/NixHome/cli/vim/init.lua<cr>", k_opts)
+keymap("n", "<leader>R", ":luafile ~/NixHome/home/vim/init.lua<cr>", k_opts)
 
 keymap("n", "<space><space>", "<cmd>nohls<cr>", k_opts)
 

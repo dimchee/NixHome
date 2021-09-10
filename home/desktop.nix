@@ -1,6 +1,5 @@
 {pkgs, config, ...}:
-let unstable = import<nixos-unstable> {};
-in {
+{
   programs.waybar = {
     enable = true;
     systemd.enable = true;
@@ -64,7 +63,7 @@ in {
   wayland.windowManager.sway = {
     enable = true;
     wrapperFeatures.gtk = true;
-    package = unstable.sway;
+    package = pkgs.sway;
     config = {
       modifier = "Mod4";
       terminal = "alacritty";

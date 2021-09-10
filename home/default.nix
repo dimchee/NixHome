@@ -8,7 +8,7 @@
   };
   programs.bash = {
     enable = true;
-    shellAliases.home-manager = "home-manager -f ~/NixHome/home/default.nix";
+    shellAliases.home-manager = "home-manager --flake $NIX_HOME";
   };
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
     "android-studio-stable"

@@ -9,7 +9,7 @@
     gnomeExtensions.gsconnect
     gnomeExtensions.duckduckgo-search-provider
     # gnomeExtensions.just-perfection
-    # unstable.gnomeExtensions.material-shell
+    # gnomeExtensions.material-shell
   ];
   environment.gnome.excludePackages = with pkgs; [
     gnome.cheese

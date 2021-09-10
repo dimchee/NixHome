@@ -3,6 +3,13 @@ let
 in {
   imports = [ ./cli.nix ./dev ./nixpkgs.nix ];
 
+  # Needed for nixos-rebuild and home-manager to work
+  environment.variables.NIX_HOME = "/home/dimchee/NixHome";
+  programs.bash.shellAliases.nixos-rebuild = "nixos-rebuild --flake $NIX_HOME#$HOSTNAME";
+  programs.bash.shellAliases.sudo = "sudo ";
+  # https://linuxhandbook.com/run-alias-as-sudo/
+
+
   # nixos-rebuild switch
   # environment.variables.NIXOS_CONFIG =
   #  "/home/dimchee/NixHome/configuration.nix";
@@ -27,6 +34,7 @@ in {
   };
 
   environment.systemPackages = with pkgs; [
+    home-manager
     firefox alacritty
     cage brave
   ];

@@ -1,10 +1,10 @@
-{ pkgs, ... }:
+{ pkgs, nix-home, ... }:
 let
   drop = n: l: if n > 0 then drop (n - 1) (builtins.tail l) else l; 
   getRelPathString = path: builtins.concatStringsSep "/" (drop 4 (
     builtins.filter builtins.isString (builtins.split "/" (toString path))
   ));
-  getPathString = path: (builtins.getEnv "NIX_HOME") + (getRelPathString path);
+  getPathString = path: nix-home + "/" + (getRelPathString path);
   mkSymlink = path: pkgs.runCommandLocal (baseNameOf path + "-link") {} ''
     ln -s ${getPathString path} $out
   '';

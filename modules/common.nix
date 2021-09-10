@@ -1,19 +1,15 @@
-{ config, pkgs, lib, inputs, ... }:
+{ pkgs, nix-home,... }:
 let
 in {
   imports = [ ./cli.nix ./dev ./nixpkgs.nix ];
 
   # Needed for nixos-rebuild and home-manager to work
-  environment.variables.NIX_HOME = "/home/dimchee/NixHome";
-  programs.bash.shellAliases.nixos-rebuild = "nixos-rebuild --flake $NIX_HOME#$HOSTNAME";
+  environment.variables.NIX_HOME = nix-home;
+  programs.bash.shellAliases.nixos-rebuild =
+    "nixos-rebuild --flake $NIX_HOME#$HOSTNAME";
   programs.bash.shellAliases.sudo = "sudo ";
   # https://linuxhandbook.com/run-alias-as-sudo/
-
-
-  # nixos-rebuild switch
-  # environment.variables.NIXOS_CONFIG =
-  #  "/home/dimchee/NixHome/configuration.nix";
-  # security.sudo.extraConfig = "Defaults env_keep+=NIXOS_CONFIG";
+  # Maybe security.sudo.extraConfig = "Defaults env_keep+=NIX_HOME";
 
   time.timeZone = "Europe/Belgrade";
 

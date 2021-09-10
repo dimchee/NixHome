@@ -8,7 +8,10 @@
     home-manager.url = "github:nix-community/home-manager";  
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
-  outputs = { self, nixpkgs, home-manager, ... }@inputs: {
+  outputs = { self, nixpkgs, home-manager,... }@inputs:
+  let
+    nix-home = "/home/dimchee/NixHome";
+  in {
     nixosConfigurations = {
       sanctum = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -22,7 +25,7 @@
           #  home-manager.users.dimchee = import ./home;
           #}
         ];
-        extraArgs = { inherit inputs; };
+        extraArgs = { inherit inputs; inherit nix-home; };
       };
       alvearium = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -38,7 +41,7 @@
           #  home-manager.users.dimchee = import ./home;
           #}
         ];
-        extraArgs = { inherit inputs; };
+        extraArgs = { inherit inputs; inherit nix-home; };
       };
     };
     homeConfigurations = {
@@ -47,6 +50,7 @@
         configuration = { ... }: { imports = [ ./home ]; };
         system = "x86_64-linux";
         homeDirectory = "/home/dimchee";
+        extraSpecialArgs = { inherit nix-home; };
       };
     };
   };

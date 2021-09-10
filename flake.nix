@@ -41,5 +41,13 @@
         extraArgs = { inherit inputs; };
       };
     };
+    homeConfigurations = {
+      dimchee = home-manager.lib.homeManagerConfiguration {
+        username = "dimchee";
+        configuration = { ... }: { imports = [ ./home ]; };
+        system = "x86_64-linux";
+        homeDirectory = "/home/dimchee";
+      };
+    };
   };
 }

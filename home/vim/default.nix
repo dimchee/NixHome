@@ -1,4 +1,4 @@
-{ pkgs, nix-home, ... }:
+{ pkgs, nix-home, inputs,... }:
 let
   drop = n: l: if n > 0 then drop (n - 1) (builtins.tail l) else l; 
   getRelPathString = path: builtins.concatStringsSep "/" (drop 4 (
@@ -14,11 +14,7 @@ let
   };
   getTSNvim = list : builtins.foldl' (x: y: x // y) {} (map addTSNvim list);
 in {
-  #nixpkgs.overlays = [
-  #  (import (builtins.fetchTarball {
-  #    url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
-  #  }))
-  #];
+  nixpkgs.overlays = [ inputs.neovim.overlay ];
   home.packages = with pkgs; [
     neovim
     

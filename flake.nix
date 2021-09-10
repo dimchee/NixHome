@@ -50,7 +50,7 @@
         configuration = { ... }: { imports = [ ./home ]; };
         system = "x86_64-linux";
         homeDirectory = "/home/dimchee";
-        extraSpecialArgs = { inherit nix-home; };
+        extraSpecialArgs = { inherit nix-home; inherit inputs; };
       };
     };
   };

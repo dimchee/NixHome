@@ -70,8 +70,6 @@
       menu = "bemenu-run --fn 12";
       output."*".bg = "${toString ./suma.png} fill";
       startup = [{
-        command = "${pkgs.waybar}/bin/waybar";
-      } {
         command = "${pkgs.wl-clipboard}/bin/wl-paste -t text --watch "
                 + "${pkgs.clipman}/bin/clipman store";
       }];
@@ -136,7 +134,6 @@
     backgroundColor = "#63E4FF85";
   };
   home.packages = with pkgs; [
-    waybar
     swaylock
     swayidle
     wl-clipboard clipman

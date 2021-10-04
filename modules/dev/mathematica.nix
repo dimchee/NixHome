@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 let
 # - https://mathematica.stackexchange.com/questions/189306/cant-launch-mathematica-11-on-fedora-29
   mathematica = pkgs.symlinkJoin {

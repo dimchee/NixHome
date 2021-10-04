@@ -32,7 +32,7 @@ M.config = function()
 
     local servers = {
 	'ccls', 'hls', 'rust_analyzer', 'gopls', 'texlab', 'purescriptls',
-	'rnix', 'bashls', 'elmls', 'pyright', 'zls' -- ,'julials'
+	'rnix', 'bashls', 'elmls', 'pyright', 'zls', 'gdscript' -- ,'julials'
     }
     for _, s in ipairs(servers) do
         lsp[s].setup {

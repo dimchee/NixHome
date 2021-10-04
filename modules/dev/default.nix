@@ -3,10 +3,8 @@
   imports = [
     ./julia.nix
     #./python.nix
-    # ./mathematica.nix
+    ./mathematica.nix
   ];
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [ "mathematica" "android-studio-stable" ];
   environment.variables = {
     GOPATH = "$HOME/Code/Go";
   };

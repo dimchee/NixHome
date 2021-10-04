@@ -40,7 +40,9 @@ require'packer'.startup(function(use)
     use {'onsails/lspkind-nvim', requires={'neovim/nvim-lspconfig'},
         config = function() require('lspkind').init {with_text = false} end
     }
-    use {'neovim/nvim-lspconfig', cmd='LspStart', config = require'lsp'.config}
+    use {'neovim/nvim-lspconfig', cmd='LspStart', 
+		module = 'lspconfig', config = require'lsp'.config
+	}
     use {'hrsh7th/nvim-compe', requires = {'GoldsteinE/compe-latex-symbols'},
         cmd = 'CompeLoad', config = require'completion'.config
     }
@@ -109,6 +111,7 @@ require'packer'.startup(function(use)
     -- use {'euclidianAce/BetterLua.vim', ft='lua'}
     use {'ziglang/zig.vim', ft='zig'}
     use {'LnL7/vim-nix', ft='nix'}
+    use {'habamax/vim-godot', ft='gdscript'}
     use {'glslang/agda-vim', ft='agda'}
     use {'akinsho/flutter-tools.nvim', requires = 'nvim-lua/plenary.nvim',
         config = function()
@@ -137,7 +140,26 @@ require'packer'.startup(function(use)
         end
     }
 
-    -- use {'Julian/lean.nvim', ft = 'lean', requires = {'neovim/nvim-lspconfig'}}
+    use {'Julian/lean.nvim', ft = 'lean', requires = {
+			'neovim/nvim-lspconfig',
+			'nvim-lua/plenary.nvim',
+			'hrsh7th/nvim-compe'
+		},
+		config = function()
+			require'lean'.setup{
+				lsp = {
+					on_attach = require'lsp'.on_attach
+				},
+				lsp3 = {
+					on_attach = require'lsp'.on_attach
+				},
+				infoview = {
+					autoopen = true,
+					width = 50,
+				},
+			}
+		end
+    }
     -- use {'edwinb/idris2-vim', commit='099129e08c89d9526ad092b7980afa355ddaa24c'}
     -- use {'ShinKage/nvim-idris2', ft='idris', rocks = {'idris1-lua'}}
 
@@ -170,10 +192,12 @@ require'packer'.startup(function(use)
 
     use {'dstein64/vim-startuptime'}
     --use {'jubnzv/virtual-types.nvim'}
-    use {'akinsho/nvim-toggleterm.lua',
+    use {'akinsho/toggleterm.nvim', setup = function()
+            vim.cmd'set hidden'
+        end,
         config = function()
             local opt = { silent=true, unique=true }
-	        require("toggleterm").setup{
+	        require'toggleterm'.setup{
 		        setup = 20,
 		        direction = 'horizontal',
                 persist_size = false,
@@ -181,11 +205,13 @@ require'packer'.startup(function(use)
 		        start_in_insert = true,
 		        close_on_exit = true,
                 on_open = function(_)
-	                vim.api.nvim_buf_set_keymap(0, "t", "<leader><leader>t", ":ToggleTerm", opt)
+	                vim.api.nvim_buf_set_keymap(
+                        0, "t", "<leader><leader>t", ":ToggleTerm", opt
+                    )
                 end
 	        }
             function Make_repl(cmd)
-	            local repl = require'nvim-toggleterm'.Terminal:new({
+	            local repl = require'toggleterm.terminal'.Terminal:new({
 	                cmd = cmd,
                     setup = 20,
                     direction = 'horizontal',

@@ -8,6 +8,9 @@
     gnomeExtensions.tweaks-in-system-menu
     gnomeExtensions.gsconnect
     gnomeExtensions.duckduckgo-search-provider
+    gnomeExtensions.no-overview
+    # gnomeExtensions.kitsch
+    # gnomeExtensions.bluetooth-quick-connect
     # gnomeExtensions.just-perfection
     # gnomeExtensions.material-shell
   ];

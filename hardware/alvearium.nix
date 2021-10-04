@@ -34,15 +34,16 @@
   # services.printing.enable = true;
 
   hardware.opengl = {
+    enable = true;
     extraPackages = with pkgs; [
       rocm-opencl-icd
       rocm-opencl-runtime
       amdvlk
     ];
-    # extraPackages32 = with pkgs; [ # only on unstable
-    #   driversi686Linux.amdvlk
-    # ];
-    # driSupport32Bit = true;
+    extraPackages32 = with pkgs; [ # only on unstable
+      driversi686Linux.amdvlk
+    ];
+    driSupport32Bit = true;
     driSupport = true;
   };
   environment.variables.VK_ICD_FILENAMES =

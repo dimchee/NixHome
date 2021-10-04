@@ -28,12 +28,13 @@ in {
     rnix-lsp
     sumneko-lua-language-server
     zls
-    neuron
-    # neovim-remote
+    inputs.neuron.packages.x86_64-linux.neuron
+    neovim-remote
   ];
   
   xdg.configFile = (getTSNvim [
     "c" "nix" "rust" "go" "lua" "python" "zig" "latex" "julia" "bash" "markdown"
+    "haskell" "agda" "ocaml" "toml" "javascript" "html" "json"
   ]) // {
     "nvim/lua".source = mkSymlink ./lua;
     "nvim/init.lua".source = mkSymlink ./init.lua;

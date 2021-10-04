@@ -1,7 +1,14 @@
-{ pkgs, nix-home,... }:
+{ pkgs, nix-home, lib, ... }:
 let
 in {
   imports = [ ./cli.nix ./dev ./nixpkgs.nix ];
+  nixpkgs.config.allowUnfreePredicate = pkg:
+  builtins.elem (lib.getName pkg) [
+    "steam" "steam-original" "steam-runtime"
+    "android-studio-stable" "mathematica"
+    "broadcom-sta" # unfree wifi card on laptop :P
+  ];
+
 
   # Needed for nixos-rebuild and home-manager to work
   environment.variables.NIX_HOME = nix-home;

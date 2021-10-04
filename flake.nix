@@ -5,6 +5,7 @@
     stable.url = "github:nixos/nixpkgs/nixos-21.05";
     neovim.url = "github:nix-community/neovim-nightly-overlay";
     neuron.url = "github:srid/neuron";
+    lean4.url = "github:leanprover/lean4";
     home-manager.url = "github:nix-community/home-manager";  
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };

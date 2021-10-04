@@ -30,11 +30,6 @@
   boot.initrd.availableKernelModules = [ "ahci" "xhci_pci" "usb_storage" "sd_mod" "sr_mod" ];
   boot.kernelModules = [ "kvm-intel" ];
 
-  # wifi card drivers (unfree :P)
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [
-      "broadcom-sta"
-    ];
   boot.initrd.kernelModules = [ "wl" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [
     broadcom_sta v4l2loopback

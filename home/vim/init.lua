@@ -51,6 +51,11 @@ vim.g.netrw_browser_viewer = 'firefox'
 
 require('mappings')
 vim.cmd[[command! PackerLoad lua require'plugins']]
+vim.cmd[[
+augroup filetypedetect
+au BufNewFile,BufRead *.lean	setf lean
+augroup END
+]]
 
 -- disable vim deprecated plugins
 vim.g.loaded_spec              = 1

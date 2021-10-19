@@ -186,6 +186,13 @@ require'packer'.startup(function(use)
                 leader = "gz", -- leader key, remember 'go zettel'
             }
     end}
+    use {'p00f/cphelper.nvim',
+    	requires = 'nvim-lua/plenary.nvim',
+	config = function()
+		vim.g.cphdir = vim.loop.os_homedir() .. "/Code/Compet"
+        vim.g.cpp_compile_command = 'g++ -Wall -Wextra -std=c++17 solution.cpp -o cpp.out'
+	end
+	}
     --use {'kyazdani42/nvim-tree.lua'}
     --use {'tjdevries/astronauta.nvim'}
     --use {'notomo/gesture.nvim'}

@@ -14,7 +14,10 @@ let
   };
   getTSNvim = list : builtins.foldl' (x: y: x // y) {} (map addTSNvim list);
 in {
-  nixpkgs.overlays = [ inputs.neovim.overlay ];
+  nixpkgs.overlays = [
+    inputs.neovim.overlay
+    # (import ./ccls.nix)
+  ];
   home.packages = with pkgs; [
     neovim
     

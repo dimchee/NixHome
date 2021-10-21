@@ -31,7 +31,7 @@ M.config = function()
     local lsp = require'lspconfig'
 
     local servers = {
-	'ccls', 'hls', 'rust_analyzer', 'gopls', 'texlab', 'purescriptls',
+	'hls', 'rust_analyzer', 'gopls', 'texlab', 'purescriptls',
 	'rnix', 'bashls', 'elmls', 'pyright', 'zls', 'gdscript' -- ,'julials'
     }
     for _, s in ipairs(servers) do
@@ -39,6 +39,10 @@ M.config = function()
             on_attach = require'lsp'.on_attach
         }
     end
+    lsp.ccls.setup {
+        on_attach = require'lsp'.on_attach,
+        cmd = {'ccls', '--init={"clang":{"extraArgs": ["-std=c++17"]}}'}
+    }
     local hand = io.popen('readlink -f $(which lua-language-server)')
     local sumneko_binary = hand:read(); hand:close()
     local sumneko_root_path = sumneko_binary..'/../..'

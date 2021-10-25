@@ -15,4 +15,5 @@
     ffmpeg imagemagick
     pandoc tectonic graphviz
   ];
+  programs.bash.shellAliases.pandoc = "pandoc --pdf-engine=tectonic";
 }

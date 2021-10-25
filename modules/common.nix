@@ -37,7 +37,6 @@ in {
   };
 
   environment.systemPackages = with pkgs; [
-    home-manager
     firefox alacritty
     cage brave
   ];

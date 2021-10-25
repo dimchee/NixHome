@@ -1,5 +1,9 @@
 M = {}
 
+M.servers = {
+    'hls', 'rust_analyzer', 'gopls', 'texlab', 'purescriptls',
+    'rnix', 'bashls', 'elmls', 'pyright', 'zls', 'gdscript' -- ,'julials'
+}
 
 M.on_attach = function(_, bufnr)
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
@@ -30,11 +34,7 @@ M.config = function()
     vim.lsp.set_log_level("debug") -- debugging
     local lsp = require'lspconfig'
 
-    local servers = {
-	'hls', 'rust_analyzer', 'gopls', 'texlab', 'purescriptls',
-	'rnix', 'bashls', 'elmls', 'pyright', 'zls', 'gdscript' -- ,'julials'
-    }
-    for _, s in ipairs(servers) do
+    for _, s in ipairs(require'lsp'.servers) do
         lsp[s].setup {
             on_attach = require'lsp'.on_attach
         }
@@ -47,8 +47,9 @@ M.config = function()
     local sumneko_binary = hand:read(); hand:close()
     local sumneko_root_path = sumneko_binary..'/../..'
     lsp.sumneko_lua.setup {
+        capabilities = capabilities,
         cmd = {sumneko_binary, "-E", sumneko_root_path .. "/main.lua"},
-	on_attach = require'lsp'.on_attach,
+        on_attach = require'lsp'.on_attach,
         settings = {
             Lua = {
                 runtime = {
@@ -63,8 +64,8 @@ M.config = function()
                 workspace = {
                     -- Make the server aware of Neovim runtime files
                     library = {
-                      [vim.fn.expand('$VIMRUNTIME/lua')] = true,
-                      [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
+                        [vim.fn.expand('$VIMRUNTIME/lua')] = true,
+                        [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
                     },
                 },
             },

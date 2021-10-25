@@ -1,23 +1,36 @@
 M = {}
 M.config = function()
     vim.cmd[[command! -nargs=* CompeLoad]] -- empty command needed
-    vim.o.completeopt = 'menuone,noselect'
-    --vim.api.nvim_set_keymap('i', '<C-Space>', 'compe#complete()', { silent=true, unique=true })
-    --vim.api.nvim_set_keymap('i', '<CR>', 'compe#confirm("<cr>")', { silent=true, unique=true })
-    require'compe'.setup {
-        source = {
-            path = true;
-            nvim_lsp = true;
-            nvim_lua = true;
-            latex_symbols = true;
-            buffer = false;
-            calc = false;
-            vsnip = false;
-            spell = false;
-            tags = false;
-            snippets_nvim = false;
-            treesitter = false
-        };
-    }
+    local cmp = require'cmp'
+    cmp.setup({
+        mapping = {
+            ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+            ['<C-f>'] = cmp.mapping.scroll_docs(4),
+            ['<C-Space>'] = cmp.mapping.complete(),
+            ['<C-e>'] = cmp.mapping.close(),
+            ['<C-y>'] = cmp.config.disable, -- If you want to remove the default `<C-y>` mapping, You can specify `cmp.config.disable` value.
+            ['<CR>'] = cmp.mapping.confirm({ select = true }),
+        },
+        sources = cmp.config.sources({
+            { name = 'nvim_lua' },
+            { name = 'nvim_lsp' },
+            { name = 'path' },
+            { name = 'buffer' },
+            { name = 'emoji' },
+            { name = 'latex_symbols' },
+        }),
+        experimental = {
+            native_menu = true,
+            ghost_text = false,
+        },
+    })
+    local capabilities = require'cmp_nvim_lsp'.update_capabilities(
+        vim.lsp.protocol.make_client_capabilities()
+    )
+    for _, s in ipairs(require'lsp'.servers) do
+        require'lspconfig'[s].setup {
+            capabilities = capabilities
+        }
+    end
 end
 return M

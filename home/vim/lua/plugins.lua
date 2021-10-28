@@ -40,9 +40,11 @@ require'packer'.startup(function(use)
     use {'onsails/lspkind-nvim', requires={'neovim/nvim-lspconfig'},
         config = function() require('lspkind').init {with_text = false} end
     }
-    use {'neovim/nvim-lspconfig', cmd='LspStart', 
+    use {'neovim/nvim-lspconfig', cmd='LspStart',
 		module = 'lspconfig', config = require'lsp'.config
 	}
+    use {'L3MON4D3/LuaSnip'}
+    use {'hrsh7th/cmp-nvim-lsp', module = 'cmp_nvim_lsp'}
     use {'hrsh7th/nvim-cmp', requires = {
         {'neovim/nvim-lspconfig'},
         {'hrsh7th/cmp-nvim-lua'},
@@ -51,10 +53,10 @@ require'packer'.startup(function(use)
         {'hrsh7th/cmp-buffer'},
         {'hrsh7th/cmp-emoji'},
         {'kdheepak/cmp-latex-symbols'},
+        {'saadparwaiz1/cmp_luasnip'},
         -- https://github.com/petertriho/cmp-git
-        -- https://github.com/saadparwaiz1/cmp_luasnip
     },
-        module = 'cmp', cmd = 'CompeLoad',
+        cmd = 'CompeLoad', module = 'cmp', opt = true,
         config = require'completion'.config
     }
     use {'lukas-reineke/indent-blankline.nvim',

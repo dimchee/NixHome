@@ -1,5 +1,9 @@
 {pkgs, ...}:
 {
+  qt5 = {
+    enable = true;
+    style = "adwaita-dark";
+  };
   environment.systemPackages = with pkgs; [
     gnomeExtensions.vitals
     gnomeExtensions.blur-my-shell

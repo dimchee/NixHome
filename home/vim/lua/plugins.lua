@@ -43,18 +43,20 @@ require'packer'.startup(function(use)
     use {'neovim/nvim-lspconfig', cmd='LspStart', 
 		module = 'lspconfig', config = require'lsp'.config
 	}
+    use {'L3MON4D3/LuaSnip', module='luasnip'}
+    use {'hrsh7th/cmp-nvim-lsp', module='cmp_nvim_lsp'}
     use {'hrsh7th/nvim-cmp', requires = {
         {'neovim/nvim-lspconfig'},
-        {'hrsh7th/cmp-nvim-lua'},
         {'hrsh7th/cmp-nvim-lsp'},
+        {'saadparwaiz1/cmp_luasnip'},
+        {'hrsh7th/cmp-nvim-lua'},
         {'hrsh7th/cmp-path'},
         {'hrsh7th/cmp-buffer'},
         {'hrsh7th/cmp-emoji'},
         {'kdheepak/cmp-latex-symbols'},
         -- https://github.com/petertriho/cmp-git
-        -- https://github.com/saadparwaiz1/cmp_luasnip
     },
-        module = 'cmp', cmd = 'CompeLoad',
+        module = 'cmp', cmd = 'CmpLoad', opt=true,
         config = require'completion'.config
     }
     use {'lukas-reineke/indent-blankline.nvim',
@@ -69,21 +71,6 @@ require'packer'.startup(function(use)
 		}
 	end
     }
-    -- use {'norcalli/snippets.nvim',
-    --     config = function()
-    --         local snippets = require'snippets'
-    --         snippets.use_suggested_mappings()
-    --         snippets.snippets = {
-    --             _global = {
-    --                 ["\\vc"] = 'č';
-    --                 ["\\'c"] = 'ć';
-    --                 ["\\vs"] = 'š';
-    --                 ["\\vz"] = 'ž';
-    --                 ["\\dj"] = 'đ'
-    --             };
-    --         }
-    --     end
-    -- }
     use {'nvim-telescope/telescope.nvim', cmd={'Telescope'},
         requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}},
         module = 'telescope'

@@ -328,6 +328,40 @@
         "type": "github"
       }
     },
+    "nixpkgs_6": {
+      "locked": {
+        "lastModified": 1633080050,
+        "narHash": "sha256-T9I2WnlUzAIL70dk9V1jqaYk3nypy/cMkWR19S47ZHc=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "82155ff501c7622cb2336646bb62f7624261f6d7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "rocm": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_6"
+      },
+      "locked": {
+        "lastModified": 1633134551,
+        "narHash": "sha256-lSmN7XxxnLhGl7r/cR0As+FlnpjqAHUzHO1QCKfqWyo=",
+        "owner": "nixos-rocm",
+        "repo": "nixos-rocm",
+        "rev": "0ec136ecd40a837e849d5c6b0cce6c5d49591759",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos-rocm",
+        "repo": "nixos-rocm",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "home-manager": "home-manager",
@@ -335,6 +369,7 @@
         "neovim": "neovim",
         "neuron": "neuron",
         "nixpkgs": "nixpkgs_5",
+        "rocm": "rocm",
         "stable": "stable"
       }
     },

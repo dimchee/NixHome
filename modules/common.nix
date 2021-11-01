@@ -32,7 +32,7 @@ in {
   users.users.dimchee = {
     isNormalUser = true;
     extraGroups = [
-      "wheel" "video" "dialout" "adbusers" "networkmanager"
+      "wheel" "video" "render" "dialout" "adbusers" "networkmanager"
     ];
   };
 

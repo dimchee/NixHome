@@ -15,22 +15,8 @@ require'packer'.startup(function(use)
     	config = require'latex'.config
     }
     use {'nvim-treesitter/nvim-treesitter',
-    config = function()
-        require'nvim-treesitter.configs'.setup {
-            highlight = {
-                enable = true,
-                additional_vim_regex_highlighting = false,
-            },
-        }
-	    local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
-	    parser_config.markdown = {
-	        install_info = {
-	    	    url = "https://github.com/ikatyang/tree-sitter-markdown",
-	    		files = {"src/parser.c", "src/scanner.cc"}
-	        },
-	        filetype = "markdown",
-	    }
-    end}
+        config = require'treesitter'.config
+    }
     use {'jghauser/follow-md-links.nvim',
         config = function()
             require('follow-md-links')
@@ -40,40 +26,25 @@ require'packer'.startup(function(use)
     use {'onsails/lspkind-nvim', requires={'neovim/nvim-lspconfig'},
         config = function() require('lspkind').init {with_text = false} end
     }
-    use {'neovim/nvim-lspconfig', cmd='LspStart', 
+    use {'neovim/nvim-lspconfig', cmd='LspStart',
 		module = 'lspconfig', config = require'lsp'.config
 	}
     use {'L3MON4D3/LuaSnip', module='luasnip'}
     use {'hrsh7th/cmp-nvim-lsp', module='cmp_nvim_lsp'}
-    use {'hrsh7th/nvim-cmp', requires = {
-        {'neovim/nvim-lspconfig'},
-        {'hrsh7th/cmp-nvim-lsp'},
-        {'saadparwaiz1/cmp_luasnip'},
-        {'hrsh7th/cmp-nvim-lua'},
-        {'hrsh7th/cmp-path'},
-        {'hrsh7th/cmp-buffer'},
-        {'hrsh7th/cmp-emoji'},
-        {'kdheepak/cmp-latex-symbols'},
-        -- https://github.com/petertriho/cmp-git
-    },
+    use {'hrsh7th/nvim-cmp',
+        requires = require'completion'.requires,
         module = 'cmp', cmd = 'CmpLoad', opt=true,
         config = require'completion'.config
     }
     use {'lukas-reineke/indent-blankline.nvim',
-    	config = function()
-		--Map blankline
-		vim.g.indent_blankline_char_highlight = 'LineNr'
-		require("indent_blankline").setup {
-			char = '┊',
-			buftype_exclude = { 'terminal', 'nofile' },
-			filetype_exclude = { 'help', 'packer' },
-			show_trailing_blankline_indent = false
-		}
-	end
+    	config = require'indent'.config
     }
-    use {'nvim-telescope/telescope.nvim', cmd={'Telescope'},
+    use {'nvim-telescope/telescope.nvim',
+        -- keys = require'tele'.keys,
+        cmd = {'Telescope'},
         requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}},
-        module = 'telescope'
+        module = 'telescope',
+        setup = require'tele'.setup
     }
 
     use {'shaunsingh/nord.nvim', setup = function()
@@ -113,7 +84,7 @@ require'packer'.startup(function(use)
     use {'glslang/agda-vim', ft='agda'}
     use {'akinsho/flutter-tools.nvim', requires = 'nvim-lua/plenary.nvim',
         config = function()
-            flutter_sdk = vim.fn.resolve(vim.fn.getenv'FLUTTER_SDK')
+            local flutter_sdk = vim.fn.resolve(vim.fn.getenv'FLUTTER_SDK')
             require'flutter-tools'.setup {
                 widget_guides = {
                     enabled = true
@@ -141,7 +112,6 @@ require'packer'.startup(function(use)
     use {'Julian/lean.nvim', ft = 'lean', requires = {
 			'neovim/nvim-lspconfig',
 			'nvim-lua/plenary.nvim',
-			'hrsh7th/nvim-compe'
 		},
 		config = function()
 			require'lean'.setup{
@@ -164,26 +134,9 @@ require'packer'.startup(function(use)
     use {'oberblastmeister/neuron.nvim',
         requires = {'nvim-telescope/telescope.nvim'},
         branch='unstable',
-        keys = {
-            {'n', 'gzi'},
-            {'n', 'gzz'},
-            {'n', 'gzZ'},
-            {'n', 'gzn'},
-            {'n', 'gzb'},
-            {'n', 'gzB'},
-            {'n', 'gzt'},
-            {'n', 'gz]'},
-            {'n', 'gz['},
-        },
-        config = function()
-            require'neuron'.setup {
-                virtual_titles = true,
-                mappings = true,
-                run = nil, -- function to run when in neuron dir
-                neuron_dir = "~/Library/Neuron",
-                leader = "gz", -- leader key, remember 'go zettel'
-            }
-    end}
+        keys = require'notes'.keys,
+        config = require'notes'.config
+    }
     use {'p00f/cphelper.nvim',
     	requires = 'nvim-lua/plenary.nvim',
 	config = function()
@@ -195,40 +148,16 @@ require'packer'.startup(function(use)
     --use {'tjdevries/astronauta.nvim'}
     --use {'notomo/gesture.nvim'}
 
+    use {'ThePrimeagen/vim-be-good'}
     use {'dstein64/vim-startuptime'}
     --use {'jubnzv/virtual-types.nvim'}
-    use {'akinsho/toggleterm.nvim', setup = function()
-            vim.cmd'set hidden'
-        end,
-        config = function()
-            local opt = { silent=true, unique=true }
-	        require'toggleterm'.setup{
-		        setup = 20,
-		        direction = 'horizontal',
-                persist_size = false,
-		        open_mapping = '<leader><leader>t',
-		        start_in_insert = true,
-		        close_on_exit = true,
-                on_open = function(_)
-	                vim.api.nvim_buf_set_keymap(
-                        0, "t", "<leader><leader>t", ":ToggleTerm", opt
-                    )
-                end
-	        }
-            function Make_repl(cmd)
-	            local repl = require'toggleterm.terminal'.Terminal:new({
-	                cmd = cmd,
-                    setup = 20,
-                    direction = 'horizontal',
-		            start_in_insert = true,
-		            close_on_exit = true,
-	            })
-                return function () repl:toggle() end
-            end
-        end
+    use {'akinsho/toggleterm.nvim',
+        setup = function() vim.cmd'set hidden' end,
+        config = require'terminal'.config
     }
 end)
 
 -- ToDo
 -- https://github.com/jghauser/follow-md-links.nvim
--- vim-which-key 
+-- vim-which-key
+-- https://github.com/folke/trouble.nvim

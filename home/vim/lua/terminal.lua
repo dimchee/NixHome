@@ -19,5 +19,31 @@ function M.setup()
     }
     return Window
 end
+function M.config()
+    local opt = { silent=true, unique=true }
+    require'toggleterm'.setup{
+        setup = 20,
+        direction = 'horizontal',
+        persist_size = false,
+        open_mapping = '<leader><leader>t',
+        start_in_insert = true,
+        close_on_exit = true,
+        on_open = function(_)
+            vim.api.nvim_buf_set_keymap(
+            0, "t", "<leader><leader>t", ":ToggleTerm", opt
+            )
+        end
+    }
+    function Make_repl(cmd)
+        local repl = require'toggleterm.terminal'.Terminal:new({
+            cmd = cmd,
+            setup = 20,
+            direction = 'horizontal',
+            start_in_insert = true,
+            close_on_exit = true,
+        })
+        return function () repl:toggle() end
+    end
+end
 
 return M

@@ -1,7 +1,7 @@
 { config, lib, pkgs, modulesPath, inputs, ... }:
 
 {
-  # nixpkgs.overlays = [ inputs.rocm.overlay ];
+  nixpkgs.overlays = [ inputs.rocm.overlay ];
   networking.hostName = "alvearium";
   networking.interfaces.enp2s0.useDHCP = true;
   imports =
@@ -37,9 +37,9 @@
   hardware.opengl = {
     enable = true;
     extraPackages = with pkgs; [
-      rocm-opencl-icd
-      rocm-opencl-runtime
-      rocm-runtime
+      rocm-opencl-icd # not working see 'dmesg | grep kfd' https://community.amd.com/t5/knowledge-base/amd-rocm-hardware-and-software-support-document/ta-p/489937
+      # rocm-opencl-runtime
+      # rocm-runtime
       amdvlk
     ];
     extraPackages32 = with pkgs; [ # only on unstable

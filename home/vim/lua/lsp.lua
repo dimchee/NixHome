@@ -2,7 +2,7 @@ M = {}
 
 M.servers = {
     'hls', 'rust_analyzer', 'gopls', 'texlab', 'purescriptls',
-    'rnix', 'bashls', 'elmls', 'pyright', 'zls', 'gdscript' -- ,'julials'
+    'rnix', 'bashls', 'elmls', 'pyright', 'zls', 'gdscript', 'julials'
 }
 
 M.on_attach = function(_, bufnr)
@@ -43,19 +43,27 @@ M.config = function()
         on_attach = require'lsp'.on_attach,
         cmd = {'ccls', '--init={"clang":{"extraArgs": ["-std=c++17"]}}'}
     }
+    require'lsp'.lsp_lua_config()
+    table.insert(require'lsp'.servers, 'ccls')
+    table.insert(require'lsp'.servers, 'sumneko_lua')
+end
+
+M.lsp_lua_config = function()
+    local lsp = require'lspconfig'
     local hand = io.popen('readlink -f $(which lua-language-server)')
     local sumneko_binary = hand:read(); hand:close()
     local sumneko_root_path = sumneko_binary..'/../..'
+    local runtime_path = vim.split(package.path, ';')
+    table.insert(runtime_path, "lua/?.lua")
+    table.insert(runtime_path, "lua/?/init.lua")
     lsp.sumneko_lua.setup {
-        capabilities = capabilities,
         cmd = {sumneko_binary, "-E", sumneko_root_path .. "/main.lua"},
         on_attach = require'lsp'.on_attach,
         settings = {
             Lua = {
                 runtime = {
                     version = 'LuaJIT',
-                    -- Setup your lua path
-                    path = vim.split(package.path, ';'),
+                    path = runtime_path,
                 },
                 diagnostics = {
                     -- Get the language server to recognize `vim` global
@@ -63,10 +71,7 @@ M.config = function()
                 },
                 workspace = {
                     -- Make the server aware of Neovim runtime files
-                    library = {
-                        [vim.fn.expand('$VIMRUNTIME/lua')] = true,
-                        [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
-                    },
+                    library = vim.api.nvim_get_runtime_file("", true),
                 },
             },
         },

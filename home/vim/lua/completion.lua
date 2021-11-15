@@ -1,4 +1,15 @@
 M = {}
+M.requires = {
+    {'neovim/nvim-lspconfig'},
+    {'hrsh7th/cmp-nvim-lsp'},
+    {'saadparwaiz1/cmp_luasnip'},
+    {'hrsh7th/cmp-nvim-lua'},
+    {'hrsh7th/cmp-path'},
+    {'hrsh7th/cmp-buffer'},
+    {'hrsh7th/cmp-emoji'},
+    {'kdheepak/cmp-latex-symbols'},
+    -- https://github.com/petertriho/cmp-git
+}
 M.config = function()
     vim.cmd[[command! -nargs=* CmpLoad]] -- empty command needed
     local cmp = require'cmp'
@@ -34,9 +45,7 @@ M.config = function()
         vim.lsp.protocol.make_client_capabilities()
     )
     for _, s in ipairs(require'lsp'.servers) do
-        require'lspconfig'[s].setup {
-            capabilities = capabilities
-        }
+        require'lspconfig'[s].capabilities = capabilities
     end
 end
 return M

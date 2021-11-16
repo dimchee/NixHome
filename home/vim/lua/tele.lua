@@ -9,7 +9,6 @@ function M.setup()
     --keymap('n', '<leader>b' , tele_do'buffers()', k_opts)
 
     mod:set_key('ff', tele_do'find_files()')
-    mod:set_key('ff', tele_do'find_files()')
     mod:set_key('fb', tele_do'file_browser()')
     mod:set_key('/' , tele_do'current_buffer_fuzzy_find()')
     mod:set_key('g' , tele_do'live_grep()')

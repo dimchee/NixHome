@@ -11,7 +11,12 @@ function M.config()
         neuron_dir = "~/Library/Neuron",
         leader = require'notes'.leader, -- leader key, remember 'go zettel'
     }
-    require'notes':set_key('g', require'utils'.tele_do'live_grep{cwd="~/Library/Neuron"}')
+    local notes = require'notes'
+    table.foreach(
+        {'i', 'z', 'Z', 'n', 'b', 'B', 't', '[', ']'},
+        function(_, key) notes:reg_key(key); end
+    )
+    notes:set_key('g', require'utils'.tele_do'live_grep{cwd="~/Library/Neuron"}')
 end
 
 -- Ostalo je moj pokusaj

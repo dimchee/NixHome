@@ -2,7 +2,7 @@ M = {}
 
 M.servers = {
     'hls', 'rust_analyzer', 'gopls', 'texlab', 'purescriptls',
-    'rnix', 'bashls', 'elmls', 'pyright', 'zls', 'gdscript', 'julials'
+    'rnix', 'bashls', 'elmls', 'pyright', 'zls', 'gdscript'
 }
 
 M.on_attach = function(_, bufnr)
@@ -43,8 +43,16 @@ M.config = function()
         on_attach = require'lsp'.on_attach,
         cmd = {'ccls', '--init={"clang":{"extraArgs": ["-std=c++17"]}}'}
     }
+    local util = require 'lspconfig/util'
+    lsp.julials.setup {
+        on_attach = require'lsp'.on_attach,
+        root_dir = function(fname)
+            return util.find_git_ancestor(fname) or util.path.dirname(fname)
+        end,
+    }
     require'lsp'.lsp_lua_config()
     table.insert(require'lsp'.servers, 'ccls')
+    table.insert(require'lsp'.servers, 'julials')
     table.insert(require'lsp'.servers, 'sumneko_lua')
 end
 

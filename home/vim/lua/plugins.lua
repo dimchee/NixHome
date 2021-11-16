@@ -161,3 +161,4 @@ end)
 -- https://github.com/jghauser/follow-md-links.nvim
 -- vim-which-key
 -- https://github.com/folke/trouble.nvim
+-- https://github.com/nekonako/xresources-nvim

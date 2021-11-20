@@ -8,6 +8,8 @@
     lean4.url = "github:leanprover/lean4";
     home-manager.url = "github:nix-community/home-manager";  
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    rocm.url = "github:nixos-rocm/nixos-rocm";
+    rocm.inputs.nixpkgs.follows = "nixpkgs";
   };
   outputs = { self, nixpkgs, home-manager,... }@inputs:
   let

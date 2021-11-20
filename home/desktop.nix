@@ -41,7 +41,10 @@
       height = 30;
       modules-left = [ "sway/workspaces" "sway/mode" "wlr/taskbar" ];
       modules-center = [ "sway/window" ];
-      modules-right = [ "pulseaudio" "backlight" "network" "cpu" "memory" "battery" "clock" "sway/language" ]; # mpd
+      modules-right = [
+        "idle_inhibitor" "pulseaudio" "backlight" "network"
+        "cpu" "memory" "battery" "clock" "sway/language"
+      ]; # mpd
       modules = {
         "sway/workspaces" = {
           disable-scroll = true;

@@ -13,10 +13,10 @@ let
       rm $out/libexec/Mathematica/SystemFiles/Libraries/Linux-x86-64/libfreetype.so.6
       rm $out/libexec/Mathematica/SystemFiles/Libraries/Linux-x86-64/libz.so.1
       echo "REMOVED libfreetype.so libz.so"
-      mkdir -p $out/usr/share/Mathematica/Kernel
-      echo 'With[{dir = $UserDocumentsDirectory <> "/Wolfram Mathematica"},
-        If[DirectoryQ[dir], DeleteDirectory[dir]]
-      ]' > $out/usr/share/Mathematica/Kernel/init.m
+      # mkdir -p $out/usr/share/Mathematica/Kernel
+      # echo 'With[{dir = $UserDocumentsDirectory <> "/Wolfram Mathematica"},
+      #   If[DirectoryQ[dir], DeleteDirectory[dir]]
+      # ]' > $out/usr/share/Mathematica/Kernel/init.m
 
     '';
   };

@@ -19,7 +19,7 @@
     # haskellPackages.ghcide
     go
     # nasm
-    lean
+    # lean
     # racket-minimal
     # (agda.withPackages (p: [ p.standard-library ]))
   ];

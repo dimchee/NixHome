@@ -7,21 +7,21 @@
       background_opacity = 0.8;
       font = {
         normal = {
-          family = "Iosevka Nerd Font Mono";
+          family = "Iosevka";
           style = "Light";
         };
-        #bold = {
-        #  family = "monospace";
-        #  style = "Normal";
-        #};
-        #italic = {
-        #  family = "monospace";
-        #  style = "Light Italic";
-        #};
-        #bold_italic = {
-        #  family = "monospace";
-        #  style = "Italic";
-        #};
+        bold = {
+          family = "Iosevka";
+          style = "Bold";
+        };
+        italic = {
+          family = "Iosevka";
+          style = "Light Italic";
+        };
+        bold_italic = {
+          family = "Iosevka";
+          style = "Italic";
+        };
         size = 12;
       };
     };

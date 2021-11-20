@@ -1,41 +1,39 @@
-local keymap = vim.api.nvim_set_keymap
-local k_opts = { silent=true, unique=true }
+local M = {}
 
--- Remap space as leader key
---vim.api.nvim_set_keymap('', '<Space>', '<Nop>', k_opts)
-vim.g.mapleader = ','
-vim.g.maplocalleader = ','
-
-local function tele_do(s)
-    return "<cmd>lua require'telescope.builtin'."..s..'<cr>'
-end
-
---Add leader shortcuts
-vim.api.nvim_set_keymap('n', '<leader>b' , tele_do'buffers()', k_opts)
-vim.api.nvim_set_keymap('n', '<leader>ff', tele_do'find_files()', k_opts)
-vim.api.nvim_set_keymap('n', '<leader>fb', tele_do'file_browser()', k_opts)
-vim.api.nvim_set_keymap('n', '<leader>/' , tele_do'current_buffer_fuzzy_find()', k_opts)
-vim.api.nvim_set_keymap('n', '<leader>g' , tele_do'live_grep()', k_opts)
-vim.api.nvim_set_keymap('n', '<leader>cf', tele_do'find_files{cwd="~/NixHome/home/vim"}', k_opts)
---vim.api.nvim_set_keymap('n', '<leader>ht', tele_do'help_tags()', k_opts)
---vim.api.nvim_set_keymap('n', '<leader>t' , tele_do'tags()', k_opts)
---vim.api.nvim_set_keymap('n', '<leader>sg', tele_do'grep_string()', k_opts)
---vim.api.nvim_set_keymap('n', '<leader>ct', tele_do'tags{ only_current_buffer = true }', k_opts)
---vim.api.nvim_set_keymap('n', '<leader>?' , tele_do'oldfiles()', k_opts)
-
---keymap("n", "<C-b>", ":Telescope buffers show_all_buffers=true<cr>", k_opts)
-keymap("n", "<leader>R", ":luafile ~/NixHome/home/vim/init.lua<cr>", k_opts)
-
-keymap("n", "<space><space>", "<cmd>nohls<cr>", k_opts)
-
-function Make_buf_repl()
-    local repls = {haskell='ghci', prolog='swipl', python='python'}--, julia='julia'}
-    local ft = vim.api.nvim_buf_get_option(0, 'filetype')
-    if repls[ft] then
-        Cur_repl = Make_repl(repls[ft])
-        vim.api.nvim_buf_set_keymap(0, "n", "<leader>r", ":lua Cur_repl()<cr>", { silent=true })
+function M.module_keymaps(module, leader, keys)
+    local utils = require'utils'
+    module.leader = leader
+    module.keys = vim.tbl_map(function(x) return {'n', leader .. x} end, keys)
+    module.is_key_set = {}
+    --vim.tbl_foreach(module.keys, function(_, k) module.is_key_set[k] = false end)
+    module.find_key = function(mod, val)
+        local filt = vim.tbl_filter(function(v)
+            return vim.deep_equal(v, val)
+        end, mod.keys)
+        local cnt = vim.tbl_count(filt)
+        -- (1 < cnt) and print('WARNING: multiple same keys registered')
+        return (0 < cnt) and filt[1]
+    end
+    module.reg_key = function(mod, key, mode)
+        local l_key = mod:find_key {mode or 'n', mod.leader..key}
+        if not l_key then print('WARNING: no registred '.. l_key) end
+        if not mod.is_key_set[l_key] then mod.is_key_set[l_key] = true
+        else print('WARNING: already set '..vim.inspect(l_key)) end
+    end
+    module.set_key = function(mod, key, cmd, mode, opt)
+        vim.api.nvim_set_keymap(mode or 'n', mod.leader..key, cmd, opt or { silent = true })
+        mod:reg_key(key, mode)
+    end
+    module.check_keys = function(mod)
+        if not mod then return end
+        vim.tbl_foreach(mod.keys, function(_, x)
+            local key = mod:find_key(x)
+            if mod.is_key_set[key]
+                then print('INFO   : there is keybinding   '.. vim.inspect(key))
+                else print('WARNING: not set registred key '.. vim.inspect(key))
+            end
+        end)
     end
 end
-vim.cmd[[autocmd FileType * :lua Make_buf_repl()]]
---keymap("n", "gzn", ":lua New_note('~/Library/Neuron')<CR>", {silent=true})
---keymap("n", "<CR>", ":lua On_enter()<CR>", {silent=true})
+
+return M

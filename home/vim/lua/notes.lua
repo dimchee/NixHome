@@ -1,5 +1,26 @@
 M = {}
 
+
+require'mappings'.module_keymaps(M, "gz", { "i", "z", "Z", "n", "b", "B", "t", "[", "]", "g", "lj"})
+
+function M.config()
+    require'neuron'.setup {
+        virtual_titles = true,
+        mappings = true,
+        run = nil, -- function to run when in neuron dir
+        neuron_dir = "~/Library/Neuron",
+        leader = require'notes'.leader, -- leader key, remember 'go zettel'
+    }
+    local notes = require'notes'
+    table.foreach(
+        {'i', 'z', 'Z', 'n', 'b', 'B', 't', '[', ']'},
+        function(_, key) notes:reg_key(key); end
+    )
+    notes:set_key('g', require'utils'.tele_do'live_grep{cwd="~/Library/Neuron"}')
+end
+
+-- Ostalo je moj pokusaj
+
 local function sh(cmd)
     local hand = io.popen(cmd)
     local res  = hand:read(); hand:close()
@@ -47,7 +68,6 @@ local function rand_name()
     end return s
 end
 
-
 function M.new_note()
     math.randomseed(os.time())
     local file repeat file = rand_name()
@@ -59,4 +79,4 @@ function M.new_note()
     ))
 end
 
-return M;
+return M

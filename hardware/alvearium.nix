@@ -1,6 +1,7 @@
-{ config, lib, pkgs, modulesPath, ... }:
+{ config, lib, pkgs, modulesPath, inputs, ... }:
 
 {
+  nixpkgs.overlays = [ inputs.rocm.overlay ];
   networking.hostName = "alvearium";
   networking.interfaces.enp2s0.useDHCP = true;
   imports =
@@ -18,7 +19,7 @@
     "ahci" "ohci_pci" "ehci_pci" "pata_atiixp" "firewire_ohci"
     "pata_marvell" "usb_storage" "usbhid" "sd_mod" "sr_mod"
   ];
-  boot.initrd.kernelModules = [ ];
+  boot.initrd.kernelModules = [ "amdgpu" ];
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
 
@@ -36,8 +37,9 @@
   hardware.opengl = {
     enable = true;
     extraPackages = with pkgs; [
-      rocm-opencl-icd
-      rocm-opencl-runtime
+      rocm-opencl-icd # not working see 'dmesg | grep kfd' https://community.amd.com/t5/knowledge-base/amd-rocm-hardware-and-software-support-document/ta-p/489937
+      # rocm-opencl-runtime
+      # rocm-runtime
       amdvlk
     ];
     extraPackages32 = with pkgs; [ # only on unstable
@@ -46,10 +48,19 @@
     driSupport32Bit = true;
     driSupport = true;
   };
-  environment.variables.VK_ICD_FILENAMES =
-    "/run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json";
+  # environment.variables.OCL_ICD_VENDORS = with pkgs; "${rocm-opencl-icd}/etc/OpenCL/vendors/";
 
   # Enable sound.
-  sound.enable = true;
-  hardware.pulseaudio.enable = true;
+  sound.enable = false;
+  hardware.pulseaudio.enable = false;
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa = {
+      enable = true;
+      support32Bit = true;
+    };
+    pulse.enable = true;
+    #jack.enable = true;
+  };
 }

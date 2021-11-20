@@ -32,12 +32,11 @@ in {
   users.users.dimchee = {
     isNormalUser = true;
     extraGroups = [
-      "wheel" "video" "dialout" "adbusers" "networkmanager"
+      "wheel" "video" "render" "dialout" "adbusers" "networkmanager"
     ];
   };
 
   environment.systemPackages = with pkgs; [
-    home-manager
     firefox alacritty
     cage brave
   ];
@@ -46,6 +45,7 @@ in {
     BROWSER = "firefox";
     TERMINAL = "alacritty";
     PATH = "$PATH:$HOME/Code/scripts";
+    XCURSOR_THEME = "Adwaita"; # solves https://github.com/alacritty/alacritty/issues/4780
   };
 
 

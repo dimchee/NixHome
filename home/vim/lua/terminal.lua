@@ -1,5 +1,5 @@
 -- https://stackoverflow.com/questions/37232418/toggle-neovim-terminal-buffer-like-nerdtree-plugin
-M = {}
+local M = {}
 
 function M.setup()
     Window = {
@@ -45,5 +45,15 @@ function M.config()
         return function () repl:toggle() end
     end
 end
+
+function M.make_buf_repl()
+    local repls = {haskell='ghci', prolog='swipl', python='python'}--, julia='julia'}
+    local ft = vim.api.nvim_buf_get_option(0, 'filetype')
+    if repls[ft] then
+        Cur_repl = Make_repl(repls[ft])
+        keymap(0, "n", "<leader>r", ":lua Cur_repl()<cr>", { silent=true })
+    end
+end
+vim.cmd[[autocmd FileType * :lua require'terminal'.make_buf_repl()]]
 
 return M

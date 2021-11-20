@@ -49,7 +49,18 @@ vim.g.netrw_browser_viewer = 'firefox'
 -- package.loaded['notes'] = nil
 -- require('notes')
 
-require('mappings')
+vim.tbl_foreach = table.foreach 
+
+vim.g.mapleader = ','
+vim.g.maplocalleader = ','
+local keymap = vim.api.nvim_set_keymap
+local k_opts = { silent=true, unique=true }
+--keymap("n", "<C-b>", ":Telescope buffers show_all_buffers=true<cr>", k_opts)
+keymap("n", "<leader>R", ":luafile ~/NixHome/home/vim/init.lua<cr>", k_opts)
+keymap("n", "<space><space>", "<cmd>nohls<cr>", k_opts)
+--keymap("n", "gzn", ":lua New_note('~/Library/Neuron')<CR>", {silent=true})
+--keymap("n", "<CR>", ":lua On_enter()<CR>", {silent=true})
+
 vim.cmd[[command! PackerLoad lua require'plugins']]
 vim.cmd[[
 augroup filetypedetect

@@ -1,6 +1,6 @@
 M = {}
 
-require'utils'.module_keymaps(M, ',', {'ff', 'fb', '/', 'g', 'cf'})
+require'mappings'.module_keymaps(M, ',', {'ff', 'fb', '/', 'g', 'cf'})
 
 function M.setup()
     local tele_do = require'utils'.tele_do

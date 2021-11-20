@@ -1,7 +1,7 @@
 M = {}
 
 
-require'utils'.module_keymaps(M, "gz", { "i", "z", "Z", "n", "b", "B", "t", "[", "]", "g", "lj"})
+require'mappings'.module_keymaps(M, "gz", { "i", "z", "Z", "n", "b", "B", "t", "[", "]", "g", "lj"})
 
 function M.config()
     require'neuron'.setup {

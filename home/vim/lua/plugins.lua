@@ -150,6 +150,9 @@ require'packer'.startup(function(use)
 
     use {'ThePrimeagen/vim-be-good'}
     use {'dstein64/vim-startuptime'}
+    use {'terrortylor/nvim-comment',
+        config = function() require('nvim_comment').setup() end
+    }
     --use {'jubnzv/virtual-types.nvim'}
     use {'akinsho/toggleterm.nvim',
         setup = function() vim.cmd'set hidden' end,
@@ -162,3 +165,4 @@ end)
 -- vim-which-key
 -- https://github.com/folke/trouble.nvim
 -- https://github.com/nekonako/xresources-nvim
+-- https://github.com/phaazon/hop.nvim

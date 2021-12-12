@@ -45,13 +45,51 @@
         "idle_inhibitor" "pulseaudio" "backlight" "network"
         "cpu" "memory" "battery" "clock" "sway/language"
       ]; # mpd
-      modules."sway/workspaces" = {
-        disable-scroll = true;
-        all-outputs = false;
-        format-icons = {
-          focused = "";
-          default = "";
+      modules = {
+        "sway/workspaces" = {
+          disable-scroll = true;
+          all-outputs = false;
+          format = "{icon}";
+          format-icons = {
+            focused = "";
+            default = "";
+          };
         };
+        "sway/mode".format = "<span style=\"italic\">{}</span>";
+	    backlight.format = "{percent}%";
+        clock.format-alt = "{:%Y-%m-%d}";
+        cpu.format = "{usage}% ";
+        memory.format = "{}% ";
+        battery = {
+          bat = "BAT1";
+          states = {
+            good = 95;
+            warning = 20;
+            critical = 12;
+          };
+          format = "{capacity}% {icon}";
+          #"format-good": "", // An empty format will hide the module
+          #"format-full": "",
+          format-icons = ["" "" "" "" ""];
+        };
+        network = {
+          format-wifi = "{essid} ({signalStrength}%) ";
+          format-ethernet = "{ifname}: {ipaddr}/{cidr} ";
+          format-disconnected = "  ⚠  ";
+        };
+        mpd = {
+		  format = "{title} 🎶  ";
+		  format-stopped = "⏹️  ";
+		  format-paused = "⏸️  ";
+	    };
+        "wlr/taskbar" = {
+		  format = "{icon}";
+		  icon-size = 14;
+		  icon-theme = "Numix-Circle";
+		  tooltip-format = "{title}";
+		  on-click = "activate";
+		  on-click-middle = "close";
+	    };
       };
     }];
   };

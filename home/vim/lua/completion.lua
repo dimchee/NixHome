@@ -35,6 +35,7 @@ M.config = function()
             { name = 'buffer' },
             { name = 'emoji' },
             { name = 'latex_symbols' },
+        	{ name = 'neorg' },
         }),
         experimental = {
             native_menu = true,

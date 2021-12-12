@@ -9,7 +9,7 @@
     gnomeExtensions.gsconnect
     gnomeExtensions.duckduckgo-search-provider
     gnomeExtensions.no-overview
-    gnomeExtensions.fly-pie
+    # gnomeExtensions.fly-pie
     # gnomeExtensions.kitsch
     # gnomeExtensions.bluetooth-quick-connect
     # gnomeExtensions.just-perfection

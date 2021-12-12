@@ -1,7 +1,6 @@
 local M = {}
 
 function M.module_keymaps(module, leader, keys)
-    local utils = require'utils'
     module.leader = leader
     module.keys = vim.tbl_map(function(x) return {'n', leader .. x} end, keys)
     module.is_key_set = {}
@@ -16,7 +15,7 @@ function M.module_keymaps(module, leader, keys)
     end
     module.reg_key = function(mod, key, mode)
         local l_key = mod:find_key {mode or 'n', mod.leader..key}
-        if not l_key then print('WARNING: no registred '.. l_key) end
+        if not l_key then print('WARNING: no registred '.. vim.inspect(l_key)) end
         if not mod.is_key_set[l_key] then mod.is_key_set[l_key] = true
         else print('WARNING: already set '..vim.inspect(l_key)) end
     end

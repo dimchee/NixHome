@@ -54,7 +54,7 @@ vim.tbl_foreach = table.foreach
 vim.g.mapleader = ','
 vim.g.maplocalleader = ','
 local keymap = vim.api.nvim_set_keymap
-local k_opts = { silent=true, unique=true }
+local k_opts = { silent=true }
 --keymap("n", "<C-b>", ":Telescope buffers show_all_buffers=true<cr>", k_opts)
 keymap("n", "<leader>R", ":luafile ~/NixHome/home/vim/init.lua<cr>", k_opts)
 keymap("n", "<space><space>", "<cmd>nohls<cr>", k_opts)
@@ -88,3 +88,16 @@ vim.g.loaded_netrw             = 1
 vim.g.loaded_netrwPlugin       = 1
 vim.g.loaded_netrwSettings     = 1
 vim.g.loaded_netrwFileHandlers = 1
+
+function Markdownify()
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local ln = vim.api.nvim_get_current_line()
+    vim.api.nvim_set_current_line(ln:sub(1, col+1)
+        .. '[]('..vim.fn.getreg'+' .. ')'
+        .. ln:sub(col+2, #ln + 1)
+    )
+    vim.api.nvim_win_set_cursor(0, {row, col + 2})
+    vim.cmd'startinsert'
+end
+keymap("n", "mp", "<cmd>lua Markdownify()<cr>", k_opts)
+

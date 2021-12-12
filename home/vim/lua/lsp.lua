@@ -5,7 +5,7 @@ M.servers = {
     'rnix', 'bashls', 'elmls', 'pyright', 'zls', 'gdscript'
 }
 
-M.on_attach = function(_, bufnr)
+M.on_attach = function(client, bufnr)
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
     local opts = { unique = true, silent = true }
@@ -28,6 +28,12 @@ M.on_attach = function(_, bufnr)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>so', [[<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>]], opts)
     vim.cmd [[ command! Format execute 'lua vim.lsp.buf.formatting()' ]]
+    if vim.lsp.codelens and client.resolved_capabilities['code_lens'] then
+        print'capable of code_lens :)'
+        vim.cmd('au InsertLeave <buffer='..bufnr..'> lua vim.lsp.codelens.refresh()')
+        vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>ce", "<cmd>lua vim.lsp.codelens.refresh()<CR>", opts)
+        vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>cr", "<cmd>lua vim.lsp.codelens.run()<CR>", opts)
+    end
 end
     
 M.config = function()

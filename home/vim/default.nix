@@ -37,7 +37,7 @@ in {
   
   xdg.configFile = (getTSNvim [
     "c" "nix" "rust" "go" "lua" "python" "zig" "latex" "julia" "bash" "markdown"
-    "haskell" "agda" "ocaml" "toml" "javascript" "html" "json"
+    "haskell" "agda" "ocaml" "toml" "javascript" "html" "json" #"glsl"
   ]) // {
     "nvim/lua".source = mkSymlink ./lua;
     "nvim/init.lua".source = mkSymlink ./init.lua;

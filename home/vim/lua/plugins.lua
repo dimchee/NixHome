@@ -60,12 +60,10 @@ require'packer'.startup(function(use)
         requires = {'kyazdani42/nvim-web-devicons', opt = true},
         config = function() require'lualine'.setup {options = {theme = 'nord'}} end
     }
-    use {'akinsho/nvim-bufferline.lua',
+    use {'akinsho/bufferline.nvim',
         requires = 'kyazdani42/nvim-web-devicons',
-        config = function()
-            vim.opt.termguicolors = true
-            require'bufferline'.setup{}
-        end, keys = { '<leader>bl' }
+        config = require'bufline'.config,
+        keys = require'bufline'.keys
     }
     use {'kyazdani42/nvim-web-devicons', module = 'nvim-web-devicons'}
     --use {'romgrk/barbar.nvim',
@@ -82,6 +80,11 @@ require'packer'.startup(function(use)
     use {'LnL7/vim-nix', ft='nix'}
     use {'habamax/vim-godot', ft='gdscript'}
     use {'glslang/agda-vim', ft='agda'}
+    use {'tikhomirov/vim-glsl', ft='glsl',
+        setup = function()
+            vim.cmd'autocmd! BufNewFile,BufRead *.vs,*.fs,*.glsl set ft=glsl'
+        end
+    }
     use {'akinsho/flutter-tools.nvim', requires = 'nvim-lua/plenary.nvim',
         config = function()
             local flutter_sdk = vim.fn.resolve(vim.fn.getenv'FLUTTER_SDK')
@@ -153,10 +156,46 @@ require'packer'.startup(function(use)
     use {'terrortylor/nvim-comment',
         config = function() require('nvim_comment').setup() end
     }
-    --use {'jubnzv/virtual-types.nvim'}
     use {'akinsho/toggleterm.nvim',
         setup = function() vim.cmd'set hidden' end,
         config = require'terminal'.config
+    }
+    use {'TimUntersberger/neogit',
+        requires = 'nvim-lua/plenary.nvim',
+        keys = require'git'.keys,
+        config = require'git'.config,
+    }
+    use {'nvim-neorg/neorg',
+        setup = vim.cmd'autocmd BufRead,BufNewFile *.norg setlocal filetype=norg',
+        after = {'nvim-treesitter'}, ft = 'norg',
+        config = function()
+            require'neorg'.setup {
+                -- Tell Neorg what modules to load
+                load = {
+                    ["core.defaults"] = {}, -- Load all the default modules
+                    ["core.norg.concealer"] = {}, -- Allows for use of icons
+                    ["core.keybinds"] = {
+                        config = {
+                            default_keybinds = true,
+                            neorg_leader = "<Leader>o"
+                        }
+                    },
+                    ["core.norg.dirman"] = {
+                        config = {
+                            workspaces = {
+                                my_workspace = "~/Library/Neorg"
+                            }
+                        }
+                    },
+                    ["core.norg.completion"] = {
+                        config = {
+                            engine = 'nvim-cmp'
+                        }
+                    }
+                },
+            }
+        end,
+        requires = "nvim-lua/plenary.nvim"
     }
 end)
 
@@ -166,3 +205,8 @@ end)
 -- https://github.com/folke/trouble.nvim
 -- https://github.com/nekonako/xresources-nvim
 -- https://github.com/phaazon/hop.nvim
+-- https://github.com/blackCauldron7/surround.nvim
+-- https://github.com/kevinhwang91/nvim-bqf
+-- https://github.com/nvim-neorg/neorg
+-- https://github.com/hkupty/iron.nvim
+-- https://github.com/jubnzv/virtual-types.nvim/

@@ -9,7 +9,7 @@ let
     ipython
     qtconsole
     beautifulsoup4
-    pyls-mypy
+    #pyls-mypy
   ]; 
 in
 {

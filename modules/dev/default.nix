@@ -2,7 +2,7 @@
 {
   imports = [
     ./julia.nix
-    #./python.nix
+    ./python.nix
     ./mathematica.nix
   ];
   environment.variables = {

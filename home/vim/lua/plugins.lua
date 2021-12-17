@@ -195,13 +195,17 @@ require'packer'.startup(function(use)
                 },
             }
         end,
-        requires = "nvim-lua/plenary.nvim"
+        requires = 'nvim-lua/plenary.nvim'
+    }
+    use {
+        'folke/trouble.nvim',
+        requires = 'kyazdani42/nvim-web-devicons',
+        config = function() require'trouble'.setup {} end
     }
 end)
 
 -- ToDo
 -- https://github.com/jghauser/follow-md-links.nvim
--- vim-which-key
 -- https://github.com/folke/trouble.nvim
 -- https://github.com/nekonako/xresources-nvim
 -- https://github.com/phaazon/hop.nvim
@@ -210,3 +214,4 @@ end)
 -- https://github.com/nvim-neorg/neorg
 -- https://github.com/hkupty/iron.nvim
 -- https://github.com/jubnzv/virtual-types.nvim/
+-- https://github.com/folke/which-key.nvim

@@ -1,14 +1,18 @@
 {pkgs, ...}:
 {
+  nixpkgs.config.firefox.enableGnomeExtensions = true;
+  services.gnome.chrome-gnome-shell.enable = true;
+  # https://unix.stackexchange.com/questions/437248/how-can-i-install-gnome-shell-extensions-from-extensions-gnome-org-through-firef
   environment.systemPackages = with pkgs; [
-    gnomeExtensions.vitals
-    gnomeExtensions.blur-my-shell
-    gnomeExtensions.screenshot-tool
-    gnomeExtensions.adwaita-theme-switcher
-    gnomeExtensions.tweaks-in-system-menu
-    gnomeExtensions.gsconnect
-    gnomeExtensions.duckduckgo-search-provider
-    gnomeExtensions.no-overview
+    #gnomeExtensions.vitals
+    #gnomeExtensions.blur-my-shell
+    #gnomeExtensions.screenshot-tool
+    #gnomeExtensions.adwaita-theme-switcher
+    #gnomeExtensions.tweaks-in-system-menu
+    #gnomeExtensions.gsconnect
+    #gnomeExtensions.duckduckgo-search-provider
+    #gnomeExtensions.no-overview
+
     # gnomeExtensions.fly-pie
     # gnomeExtensions.kitsch
     # gnomeExtensions.bluetooth-quick-connect

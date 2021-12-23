@@ -24,6 +24,7 @@
     wasm3
     wofi
     xorg.xeyes
+    gnumake
     #(juniper.overrideAttrs (old : {
     #  version = "3.0.0";
     #  src = fetchzip {

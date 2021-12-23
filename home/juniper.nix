@@ -2,13 +2,11 @@
 
 stdenv.mkDerivation rec {
   pname = "juniper";
-  version = "3.0.0";
-
+  version = "3.1.0";
   src = fetchzip {
     url = "http://www.juniper-lang.org/installers/Juniper-${version}.zip";
-    #sha256 = "10am6fribyl7742yk6ag0da4rld924jphxja30gynzqysly8j0vg";
-    sha256 = "1nla00f3422bgwqp7dwij38ar61z6dk81s8ac1dwxmn74yb93zfv";
-    stripRoot = false;
+    sha256 = "0v29c7z2k2xl38i1a7rs0g23m9d3wgj0smhmhb84a9mjgyl04brp";
+    stripRoot = true;
   };
 
   doCheck = true;

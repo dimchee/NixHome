@@ -1,4 +1,4 @@
-M = {}
+M = {'lukas-reineke/indent-blankline.nvim'}
 
 function M.config()
     --Map blankline

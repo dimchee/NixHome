@@ -1,4 +1,8 @@
-M = {}
+local M = {
+    'lervag/vimtex',
+    ft='tex',
+}
+
 M.setup = function()
     vim.g.vimtex_compiler_method = 'tectonic'
     vim.g.vimtex_quickfix_enabled = true
@@ -23,4 +27,6 @@ M.config = function()
     vim.api.nvim_buf_set_keymap(0, "i", "\\v Z", "Ž", su)
     vim.api.nvim_buf_set_keymap(0, "i", "\\Dj ", "Đ", su)
 end
+
 return M
+

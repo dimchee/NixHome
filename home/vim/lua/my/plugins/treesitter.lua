@@ -1,4 +1,4 @@
-M = {}
+local M = { 'nvim-treesitter/nvim-treesitter' }
 
 function M.config()
     require'nvim-treesitter.configs'.setup {

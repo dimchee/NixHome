@@ -9,6 +9,8 @@ let
     ipython
     qtconsole
     beautifulsoup4
+    pytube
+    pydub
     #pyls-mypy
   ]; 
 in

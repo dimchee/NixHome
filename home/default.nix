@@ -25,25 +25,6 @@
     wofi
     xorg.xeyes
     gnumake
-    #(juniper.overrideAttrs (old : {
-    #  version = "3.0.0";
-    #  src = fetchzip {
-    #    url = "http://www.juniper-lang.org/installers/Juniper-3.0.0.zip";
-    #      # sha256 = "10am6fribyl7742yk6ag0da4rld924jphxja30gynzqysly8j0va";
-    #      # sha256 = "09srw3dk2bxa49ikjpmgdswd576h10p4kvq9kcr7l9smfdd1kw4j";
-    #      sha256 = "1nla00f3422bgwqp7dwij38ar61z6dk81s8ac1dwxmn74yb93zfv";
-    #      stripRoot = false;
-    #    };
-    #    installPhase = ''
-    #    runHook preInstall
-    #    mkdir -p $out/bin
-    #    cp -r ./* $out
-    #    chmod +x $out/Juniper
-    #    makeWrapper $out/Juniper $out/bin/juniper
-    #    runHook postInstall
-    #    '';
-    #  })
-    #)
     (import ./juniper.nix pkgs)
   ];
   programs.home-manager = {

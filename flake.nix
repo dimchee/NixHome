@@ -19,6 +19,8 @@
       sanctum = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
+          { _module.args.inputs = inputs; }
+          { _module.args.nix-home = nix-home; }
           ./hardware/sanctum.nix
           ./modules/common.nix
           #home-manager.nixosModules.home-manager
@@ -28,11 +30,12 @@
           #  home-manager.users.dimchee = import ./home;
           #}
         ];
-        extraArgs = { inherit inputs; inherit nix-home; };
       };
       alvearium = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
+          { _module.args.inputs = inputs; }
+          { _module.args.nix-home = nix-home; }
           ./hardware/alvearium.nix
           ./modules/common.nix
           ./modules/gnome.nix
@@ -44,7 +47,6 @@
           #  home-manager.users.dimchee = import ./home;
           #}
         ];
-        extraArgs = { inherit inputs; inherit nix-home; };
       };
     };
     homeConfigurations = {

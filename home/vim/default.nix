@@ -24,7 +24,7 @@ in {
     haskellPackages.haskell-language-server
     nodePackages.pyright
     #nodePackages.purescript-language-server
-    elmPackages.elm-language-server
+    #elmPackages.elm-language-server
     rust-analyzer
     ccls
     gopls

@@ -7,15 +7,16 @@ local M = {
 
 --require'mappings'.module_keymaps(M, '<leader>t', {'t', 'f', 'b', '/', 'g', 'c'})
         -- keys = require'tele'.keys,
+function M.tele_do(what)
+    if type(what) == 'string' then
+        return "<cmd>lua require'telescope.builtin'."..what..'<cr>'
+    else
+        print('error, cant tele_do ' .. vim.inspect(what))
+    end
+end
 
 function M.setup()
-    local function tele_do(what)
-        if type(what) == 'string' then
-            return "<cmd>lua require'telescope.builtin'."..what..'<cr>'
-        else
-            print('error, cant tele_do ' .. vim.inspect(what))
-        end
-    end
+    local tele_do = require'my.plugins.telescope'.tele_do
     local function set_key(key, what)
         vim.api.nvim_set_keymap('n', '<leader>t'..key, what, {silent=true})
     end

@@ -13,12 +13,6 @@ function M.config()
         open_mapping = '<leader><leader>t',
         start_in_insert = true,
         close_on_exit = true,
-        on_open = function()
-            vim.api.nvim_buf_set_keymap(
-                0, "t", "<leader><leader>t", ":ToggleTerm",
-                { silent=true, unique=true }
-            )
-        end
     }
 end
 

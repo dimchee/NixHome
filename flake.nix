@@ -3,17 +3,17 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     stable.url = "github:nixos/nixpkgs/nixos-21.05";
-    neovim.url = "github:nix-community/neovim-nightly-overlay";
-    neuron.url = "github:srid/neuron";
     lean4.url = "github:leanprover/lean4";
     home-manager.url = "github:nix-community/home-manager";  
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     rocm.url = "github:nixos-rocm/nixos-rocm";
     rocm.inputs.nixpkgs.follows = "nixpkgs";
+    neovim.url = "path:/home/dimchee/Nix/Vim";
+    neovim.inputs.nixpkgs.follows = "nixpkgs";
   };
   outputs = { self, nixpkgs, home-manager,... }@inputs:
   let
-    nix-home = "/home/dimchee/NixHome";
+    nix-home = "/home/dimchee/Nix/Sys";
   in {
     nixosConfigurations = {
       sanctum = nixpkgs.lib.nixosSystem {

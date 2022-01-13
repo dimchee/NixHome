@@ -1,9 +1,10 @@
 {pkgs, lib, inputs, ...}:
 {
   imports = [
-    ./desktop.nix ./gui.nix ./vim
+    ./desktop.nix ./gui.nix
   ];
   home.packages = with pkgs; [
+    inputs.neovim.packages.x86_64-linux.nvim
     # inputs.lean4.packages.x86_64-linux
     arduino-cli
     discord

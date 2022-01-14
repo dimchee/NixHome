@@ -176,7 +176,7 @@
         ]
       },
       "locked": {
-        "narHash": "sha256-PuRzFNxuSLGYQFWDTCa/5tN9U2d7WjfdKSBGINmi26M=",
+        "narHash": "sha256-l1J96CCylCjd9CFVx14S8n9IJbhSzbgsAXTADzMTEcg=",
         "path": "/home/dimchee/Nix/Vim",
         "type": "path"
       },

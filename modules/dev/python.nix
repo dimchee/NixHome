@@ -11,6 +11,7 @@ let
     beautifulsoup4
     pytube
     pydub
+    imdbpy
     #pyls-mypy
   ]; 
 in

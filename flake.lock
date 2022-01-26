@@ -97,6 +97,22 @@
         "type": "github"
       }
     },
+    "invicli": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "narHash": "sha256-oc2ThPv/2TWDyNCi5qCLokJWgyWgjCK1SpSnCUAPlG0=",
+        "path": "/home/dimchee/Code/Haskell/Invicli",
+        "type": "path"
+      },
+      "original": {
+        "path": "/home/dimchee/Code/Haskell/Invicli",
+        "type": "path"
+      }
+    },
     "lean-stage0": {
       "locked": {
         "lastModified": 0,
@@ -176,7 +192,7 @@
         ]
       },
       "locked": {
-        "narHash": "sha256-l1J96CCylCjd9CFVx14S8n9IJbhSzbgsAXTADzMTEcg=",
+        "narHash": "sha256-mo1E0s85TiSWNCU0avdH4E4AKTrMVB3r4ok2Jue16nQ=",
         "path": "/home/dimchee/Nix/Vim",
         "type": "path"
       },
@@ -383,6 +399,7 @@
     "root": {
       "inputs": {
         "home-manager": "home-manager",
+        "invicli": "invicli",
         "lean4": "lean4",
         "neovim": "neovim",
         "nixpkgs": "nixpkgs_6",

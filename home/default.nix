@@ -6,6 +6,7 @@
   home.packages = with pkgs; [
     inputs.neovim.packages.x86_64-linux.nvim
     # inputs.lean4.packages.x86_64-linux
+    elan mathlibtools
     arduino-cli
     discord
     fondo
@@ -26,6 +27,7 @@
     wofi
     xorg.xeyes
     gnumake
+    inputs.invicli.defaultPackage.x86_64-linux
     (import ./juniper.nix pkgs)
   ];
   programs.home-manager = {
@@ -34,11 +36,19 @@
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
 
+  xsession.windowManager.xmonad = {
+    enable = true;
+    config = ../../Xmonad/Config.hs;
+    extraPackages = [];
+  };
   # when not working run: nix-shell '<home-manager>' -A install
   programs.bash = {
     enable = true;
     shellAliases.home-manager = "home-manager --flake $NIX_HOME";
-    bashrcExtra = "[ -f .bash_completion ] && source .bash_completion"; # for arduino-cli
+    bashrcExtra = ''
+      [ -f .bash_completion ] && source .bash_completion # for arduino-cli
+      PATH=$PATH:~/Nix/Kod/
+    '';
   };
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
     "android-studio-stable"

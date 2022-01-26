@@ -10,6 +10,8 @@
     rocm.inputs.nixpkgs.follows = "nixpkgs";
     neovim.url = "path:/home/dimchee/Nix/Vim";
     neovim.inputs.nixpkgs.follows = "nixpkgs";
+    invicli.url = "path:/home/dimchee/Code/Haskell/Invicli";
+    invicli.inputs.nixpkgs.follows = "nixpkgs";
   };
   outputs = { self, nixpkgs, home-manager,... }@inputs:
   let

@@ -5,6 +5,7 @@
     package = pkgs.alacritty;
     settings = {
       background_opacity = 0.8;
+      window.decorations = "none";
       font = {
         normal = {
           family = "Iosevka";

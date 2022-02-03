@@ -3,7 +3,7 @@
 {
   nixpkgs.overlays = [ inputs.rocm.overlay ];
   networking.hostName = "alvearium";
-  networking.interfaces.enp2s0.useDHCP = true;
+  networking.interfaces.enp3s0.useDHCP = true;
   imports =
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
@@ -38,8 +38,9 @@
     enable = true;
     extraPackages = with pkgs; [
       rocm-opencl-icd # not working see 'dmesg | grep kfd' https://community.amd.com/t5/knowledge-base/amd-rocm-hardware-and-software-support-document/ta-p/489937
-      # rocm-opencl-runtime
-      # rocm-runtime
+      #rocm-runtime-ext # removed in favour of rocm-runtime
+      rocm-runtime
+      rocm-opencl-runtime
       amdvlk
     ];
     extraPackages32 = with pkgs; [ # only on unstable

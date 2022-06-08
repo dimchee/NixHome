@@ -7,10 +7,13 @@
   ];
   environment.variables = {
     GOPATH = "$HOME/Code/Go";
+    RUSTC_WRAPPER = "sccache";
   };
   environment.systemPackages = with pkgs; [
+    sccache
     swiProlog
     elmPackages.elm
+    # elmPackages.elm-test
     # purescript spago
     # dotnet-sdk_3
     # adoptopenjdk-bin

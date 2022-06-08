@@ -1,5 +1,6 @@
 { pkgs, ... }:
 {
+  #nixpkgs.overlays = [ (import ./webcamoid.nix) ];
   imports = [ ./zathura.nix ./alacritty.nix ];
   home.packages = with pkgs; [
     firefox-wayland
@@ -11,5 +12,6 @@
     vlc
     libreoffice
     vscodium
+    webcamoid
   ];
 }

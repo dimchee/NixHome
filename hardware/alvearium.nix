@@ -20,8 +20,10 @@
     "pata_marvell" "usb_storage" "usbhid" "sd_mod" "sr_mod"
   ];
   boot.initrd.kernelModules = [ "amdgpu" ];
-  boot.kernelModules = [ ];
-  boot.extraModulePackages = [ ];
+  boot.kernelModules = [ "v4l2loopback" "akvcam" ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [
+    v4l2loopback akvcam
+  ];
 
   fileSystems."/" =
     { device = "/dev/disk/by-label/nixos";
@@ -33,19 +35,16 @@
     ];
   
   # services.printing.enable = true;
-
+  # mesa RADV is better than amdvlk
   hardware.opengl = {
     enable = true;
     extraPackages = with pkgs; [
       rocm-opencl-icd # not working see 'dmesg | grep kfd' https://community.amd.com/t5/knowledge-base/amd-rocm-hardware-and-software-support-document/ta-p/489937
-      #rocm-runtime-ext # removed in favour of rocm-runtime
-      rocm-runtime
-      rocm-opencl-runtime
-      amdvlk
+      # rocm-runtime-ext # removed in favour of rocm-runtime
+      # rocm-runtime
+      # rocm-opencl-runtime
     ];
-    extraPackages32 = with pkgs; [ # only on unstable
-      driversi686Linux.amdvlk
-    ];
+    # For mesa RADV vulkan support
     driSupport32Bit = true;
     driSupport = true;
   };

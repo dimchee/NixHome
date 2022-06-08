@@ -45,7 +45,8 @@ in {
     BROWSER = "firefox";
     TERMINAL = "alacritty";
     PATH = "$PATH:$HOME/Code/scripts";
-    XCURSOR_THEME = "Adwaita"; # solves https://github.com/alacritty/alacritty/issues/4780
+    XCURSOR_THEME = "Adwaita alacritty"; # solves https://github.com/alacritty/alacritty/issues/4780
+    WEBKIT_FORCE_SANDBOX = "0"; # Solves nyxt problem https://github.com/NixOS/nixpkgs/issues/158005 
   };
 
 
@@ -65,6 +66,6 @@ in {
     #};
   };
 
-  system.stateVersion = "21.05";
+  system.stateVersion = "22.05";
 }
 

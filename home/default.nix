@@ -1,5 +1,6 @@
 {pkgs, lib, inputs, ...}:
 {
+  nixpkgs.overlays = [ (import ./leiningen.nix) ];
   imports = [
     ./desktop.nix ./gui.nix
   ];
@@ -8,7 +9,7 @@
     # inputs.lean4.packages.x86_64-linux
     elan mathlibtools
     arduino-cli
-    discord
+    # discord
     fondo
     gcc
     godot
@@ -29,6 +30,7 @@
     gnumake
     inputs.invicli.defaultPackage.x86_64-linux
     (import ./juniper.nix pkgs)
+    clojure clojure-lsp leiningen
   ];
   programs.home-manager = {
     enable = true;
@@ -36,11 +38,11 @@
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
 
-  xsession.windowManager.xmonad = {
-    enable = true;
-    config = ../../Xmonad/Config.hs;
-    extraPackages = [];
-  };
+  # xsession.windowManager.xmonad = {
+  #   enable = true;
+  #   config = ../../Xmonad/Config.hs;
+  #   extraPackages = [];
+  # };
   # when not working run: nix-shell '<home-manager>' -A install
   programs.bash = {
     enable = true;

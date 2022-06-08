@@ -13,7 +13,8 @@
     jq go-pup # html scraper
     zip unzip
     ffmpeg imagemagick
-    pandoc tectonic graphviz
+    #pandoc
+    tectonic graphviz
   ];
   programs.bash.shellAliases.pandoc = "pandoc --pdf-engine=tectonic";
 }

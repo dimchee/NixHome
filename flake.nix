@@ -2,7 +2,7 @@
   # inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-20.09";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    stable.url = "github:nixos/nixpkgs/nixos-21.05";
+    stable.url = "github:nixos/nixpkgs/nixos-22.05";
     lean4.url = "github:leanprover/lean4";
     home-manager.url = "github:nix-community/home-manager";  
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -10,7 +10,7 @@
     rocm.inputs.nixpkgs.follows = "nixpkgs";
     neovim.url = "path:/home/dimchee/Nix/Vim";
     neovim.inputs.nixpkgs.follows = "nixpkgs";
-    invicli.url = "path:/home/dimchee/Code/Haskell/Invicli";
+    invicli.url = "github:dimchee/Invicli";
     invicli.inputs.nixpkgs.follows = "nixpkgs";
   };
   outputs = { self, nixpkgs, home-manager,... }@inputs:

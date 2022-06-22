@@ -39,7 +39,7 @@
   hardware.opengl = {
     enable = true;
     extraPackages = with pkgs; [
-      rocm-opencl-icd # not working see 'dmesg | grep kfd' https://community.amd.com/t5/knowledge-base/amd-rocm-hardware-and-software-support-document/ta-p/489937
+      # rocm-opencl-icd # not working see 'dmesg | grep kfd' https://community.amd.com/t5/knowledge-base/amd-rocm-hardware-and-software-support-document/ta-p/489937
       # rocm-runtime-ext # removed in favour of rocm-runtime
       # rocm-runtime
       # rocm-opencl-runtime

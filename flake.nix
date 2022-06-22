@@ -1,10 +1,9 @@
 {
-  # inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-20.09";
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    stable.url = "github:nixos/nixpkgs/nixos-22.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-22.05";
+    unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     lean4.url = "github:leanprover/lean4";
-    home-manager.url = "github:nix-community/home-manager";  
+    home-manager.url = "github:nix-community/home-manager/release-22.05";  
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     rocm.url = "github:nixos-rocm/nixos-rocm";
     rocm.inputs.nixpkgs.follows = "nixpkgs";
@@ -41,7 +40,7 @@
           ./hardware/alvearium.nix
           ./modules/common.nix
           ./modules/gnome.nix
-          ./modules/gaming.nix
+          # ./modules/gaming.nix
           #home-manager.nixosModules.home-manager
           #{
           #  home-manager.useGlobalPkgs = true;
@@ -51,14 +50,12 @@
         ];
       };
     };
-    homeConfigurations = {
-      dimchee = home-manager.lib.homeManagerConfiguration {
-        username = "dimchee";
-        configuration = { ... }: { imports = [ ./home ]; };
-        system = "x86_64-linux";
-        homeDirectory = "/home/dimchee";
-        extraSpecialArgs = { inherit nix-home; inherit inputs; };
-      };
+    homeConfigurations.dimchee = home-manager.lib.homeManagerConfiguration {
+      username = "dimchee";
+      configuration = { ... }: { imports = [ ./home ]; };
+      system = "x86_64-linux";
+      homeDirectory = "/home/dimchee";
+      extraSpecialArgs = { inherit nix-home; inherit inputs; };
     };
   };
 }

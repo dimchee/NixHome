@@ -5,12 +5,12 @@
     lean4.url = "github:leanprover/lean4";
     home-manager.url = "github:nix-community/home-manager/release-22.05";  
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    rocm.url = "github:nixos-rocm/nixos-rocm";
-    rocm.inputs.nixpkgs.follows = "nixpkgs";
-    neovim.url = "path:/home/dimchee/Nix/Vim";
-    neovim.inputs.nixpkgs.follows = "nixpkgs";
+    # rocm.url = "github:nixos-rocm/nixos-rocm";
+    # rocm.inputs.nixpkgs.follows = "nixpkgs";
     invicli.url = "github:dimchee/Invicli";
     invicli.inputs.nixpkgs.follows = "nixpkgs";
+    neovim.url = "path:/home/dimchee/Nix/Vim";
+    neovim.inputs.nixpkgs.follows = "nixpkgs";
   };
   outputs = { self, nixpkgs, home-manager,... }@inputs:
   let

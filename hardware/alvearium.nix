@@ -1,7 +1,7 @@
 { config, lib, pkgs, modulesPath, inputs, ... }:
 
 {
-  nixpkgs.overlays = [ inputs.rocm.overlay ];
+  # nixpkgs.overlays = [ inputs.rocm.overlay ];
   networking.hostName = "alvearium";
   networking.interfaces.enp3s0.useDHCP = true;
   imports =
@@ -25,6 +25,8 @@
     v4l2loopback akvcam
   ];
 
+  services.fstrim.enable = true; # optimize ssd usage
+
   fileSystems."/" =
     { device = "/dev/disk/by-label/nixos";
       fsType = "ext4";
@@ -39,10 +41,10 @@
   hardware.opengl = {
     enable = true;
     extraPackages = with pkgs; [
-      # rocm-opencl-icd # not working see 'dmesg | grep kfd' https://community.amd.com/t5/knowledge-base/amd-rocm-hardware-and-software-support-document/ta-p/489937
+      rocm-opencl-icd # not working see 'dmesg | grep kfd' https://community.amd.com/t5/knowledge-base/amd-rocm-hardware-and-software-support-document/ta-p/489937
       # rocm-runtime-ext # removed in favour of rocm-runtime
       # rocm-runtime
-      # rocm-opencl-runtime
+      rocm-opencl-runtime
     ];
     # For mesa RADV vulkan support
     driSupport32Bit = true;

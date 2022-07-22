@@ -27,7 +27,7 @@ in {
 
   programs.adb.enable = true;     # adbusers group
   programs.light.enable = true;   # video group
-  programs.gphoto2.enable = true; # camera group
+  # programs.gphoto2.enable = true; # camera group
   
   users.users.dimchee = {
     isNormalUser = true;
@@ -45,7 +45,7 @@ in {
     BROWSER = "firefox";
     TERMINAL = "alacritty";
     PATH = "$PATH:$HOME/Code/scripts";
-    XCURSOR_THEME = "Adwaita alacritty"; # solves https://github.com/alacritty/alacritty/issues/4780
+    #XCURSOR_THEME = "Adwaita alacritty"; # solves https://github.com/alacritty/alacritty/issues/4780
     WEBKIT_FORCE_SANDBOX = "0"; # Solves nyxt problem https://github.com/NixOS/nixpkgs/issues/158005 
   };
 

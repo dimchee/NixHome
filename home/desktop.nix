@@ -96,7 +96,7 @@
   services.network-manager-applet.enable = true;
   services.redshift = {
     enable = true;
-    package = pkgs.redshift-wlr;
+    package = pkgs.gammastep;
     latitude  = 43.320904;
     longitude = 21.895760;
   };

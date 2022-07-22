@@ -10,7 +10,7 @@ let
       ${patchelf}/bin/patchelf \
         $ARTIFACT \
         --set-interpreter \
-        "$(cat $NIX_CC/nix-support/dynamic-linker)"
+        "$(cat ${stdenv.cc}/nix-support/dynamic-linker)"
       chmod -w $ARTIFACT
     done
     '';

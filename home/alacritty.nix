@@ -4,8 +4,10 @@
     enable = true;
     package = pkgs.alacritty;
     settings = {
-      background_opacity = 0.8;
-      window.decorations = "none";
+      window = {
+        decorations = "none";
+        opacity = 0.8;
+      };
       font = {
         normal = {
           family = "Iosevka";

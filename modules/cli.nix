@@ -10,7 +10,7 @@
     gotop
     youtube-dl
     mpc_cli ncmpcpp # music using mpd
-    jq go-pup # html scraper
+    jq pup # html scraper
     zip unzip
     ffmpeg imagemagick
     #pandoc

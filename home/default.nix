@@ -2,35 +2,35 @@
 {
   nixpkgs.overlays = [ (import ./leiningen.nix) ];
   imports = [
-    ./desktop.nix ./gui.nix
+    # ./desktop.nix
+    ./gui.nix
   ];
   home.packages = with pkgs; [
     inputs.neovim.packages.x86_64-linux.nvim
     # inputs.lean4.packages.x86_64-linux
-    elan mathlibtools
-    arduino-cli
+    # elan mathlibtools
+    # arduino-cli
     # discord
-    fondo
-    gcc
-    godot
-    julia-stable-bin
-    koka
-    libnotify
-    lutris
-    pinta
-    pplatex
-    python
-    shortwave
-    sqlitebrowser
-    teams
-    gnome.totem
-    wasm3
-    wofi
-    xorg.xeyes
-    gnumake
-    inputs.invicli.defaultPackage.x86_64-linux
-    (import ./juniper.nix pkgs)
-    clojure clojure-lsp leiningen
+    # fondo
+    # gcc
+    # godot
+    # julia-stable-bin
+    # koka
+    # libnotify
+    # lutris
+    # pinta
+    # pplatex
+    # python
+    # shortwave
+    # sqlitebrowser
+    # gnome.totem
+    # wasm3
+    # wofi
+    # xorg.xeyes
+    # gnumake
+    # inputs.invicli.defaultPackage.x86_64-linux
+    # (import ./juniper.nix pkgs)
+    # clojure clojure-lsp leiningen
   ];
   programs.home-manager = {
     enable = true;

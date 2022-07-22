@@ -12,6 +12,7 @@ let
     pytube
     pydub
     imdbpy
+    scipy
     #pyls-mypy
   ]; 
 in

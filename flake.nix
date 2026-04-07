@@ -1,8 +1,7 @@
+# nixos-rebuild switch --flake ~/XDG/Config/NixHome
 {
 	inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-22.11";
-		neovim.url = "github:nix-community/neovim-nightly-overlay";
-		neovim.inputs.nixpkgs.follows = "nixpkgs";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
 	};
 	outputs = inputs@{ nixpkgs, ...} : {
 		nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {

@@ -1,16 +1,13 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-
 { config, pkgs, ... }:
-
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./xdg_specification.nix
-    ];
-
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ./xdg_specification.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -29,6 +26,8 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
+  virtualisation.waydroid.enable = true;
+  virtualisation.waydroid.package = pkgs.waydroid-nftables;
 
   # Set your time zone.
   time.timeZone = "Europe/Belgrade";
@@ -42,6 +41,7 @@
   # Enable the GNOME Desktop Environment.
   services.displayManager.gdm.enable = true;
   services.desktopManager.gnome.enable = true;
+  programs.nix-ld.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -50,7 +50,24 @@
   };
 
   # Enable CUPS to print documents.
-  services.printing.enable = true;
+  services.printing = {
+    enable = true;
+    drivers = with pkgs; [
+      brlaser
+      cnijfilter2
+    ];
+  };
+  hardware.sane.enable = true;
+  nixpkgs.config.allowUnfreePredicate =
+    pkg:
+    builtins.elem (pkgs.lib.getName pkg) [
+      "cnijfilter2"
+    ];
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    openFirewall = true;
+  };
 
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
@@ -67,22 +84,33 @@
     # no need to redefine it in your config for now)
     #media-session.enable = true;
   };
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
   services.flatpak.enable = true;
+  services.syncthing.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.dimchee = {
     isNormalUser = true;
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "adbusers"
+      "scanner"
+      "lp"
+    ];
     packages = with pkgs; [
-    #  thunderbird
+      #  thunderbird
     ];
   };
 
   # Install firefox.
+  programs.adb.enable = true;
   programs.firefox.enable = true;
   programs.direnv.enable = true;
   programs.kdeconnect = {
@@ -93,11 +121,12 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    neovim ripgrep
+    neovim
+    ripgrep
     wezterm
     # wireguard-ui wireguard-tools
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
+    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    #  wget
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -113,6 +142,10 @@
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
 
+  networking.firewall.interfaces."wlp0s20f3" = {
+     allowedUDPPorts = [ 53 67 ];
+     allowedTCPPorts = [ 53 80 443 ];
+   };
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
